@@ -1,0 +1,199 @@
+// Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+// Variables Override
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, sans-serif;
+$primary: #4F46E5; // Indigo 600
+$secondary: #6B7280; // Gray 500
+$success: #10B981; // Emerald 500
+$info: #3B82F6; // Blue 500
+$warning: #F59E0B; // Amber 500
+$danger: #EF4444; // Red 500
+$light: #F3F4F6; // Gray 100
+$dark: #111827; // Gray 900
+
+$body-bg: #F9FAFB; // Gray 50
+$body-color: #374151; // Gray 700
+
+$card-border-radius: 0.75rem;
+$card-border-width: 0;
+$card-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+
+// Bootstrap - Modular Imports (only what we use)
+// Required
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+// Layout & components
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/tables";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/card";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/badge";
+@import "bootstrap/scss/alert";
+@import "bootstrap/scss/spinners";
+
+// Helpers
+@import "bootstrap/scss/helpers";
+@import "bootstrap/scss/utilities/api";
+
+// Custom Utilities
+body {
+    font-size: 0.925rem;
+    letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    color: $dark;
+    font-weight: 600;
+}
+
+.card {
+    box-shadow: $card-box-shadow;
+    border: none;
+    margin-bottom: 1.5rem;
+
+    .card-header {
+        background-color: white;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        font-weight: 600;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+}
+
+.btn {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+
+    &.btn-primary {
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -1px rgba(79, 70, 229, 0.1);
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.3), 0 3px 6px -1px rgba(79, 70, 229, 0.15);
+        }
+    }
+}
+
+.table {
+    th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: $secondary;
+        border-bottom-width: 1px;
+        padding: 1rem;
+    }
+
+    td {
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    // Custom Badge Style
+    .badge {
+        font-weight: 500;
+        padding: 0.5em 0.75em;
+        border-radius: 9999px;
+    }
+}
+
+// Avatar
+.avatar {
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+// Sidebar Custom - Clean White/Blue Theme
+#sidebar-wrapper {
+    background: #ffffff !important; // White Sidebar bg
+    border-right: 1px solid #e5e7eb; // Light border
+
+    .sidebar-heading {
+        background: linear-gradient(135deg, $primary 0%, #6366F1 100%) !important; // Blue gradient header
+        color: white !important;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        border-bottom: none !important;
+    }
+
+    .list-group-item {
+        background: transparent !important;
+        color: #6B7280; // Gray text
+        border: none;
+        padding: 0.85rem 1.5rem;
+        font-weight: 500;
+        transition: all 0.2s;
+        text-decoration: none !important; // Remove underline
+
+        i {
+            color: #9CA3AF;
+            transition: color 0.2s;
+        }
+
+        &:hover {
+            color: $primary;
+            background-color: #F3F4F6 !important; // Light gray hover
+            text-decoration: none !important; // Remove underline on hover
+
+            i {
+                color: $primary;
+            }
+        }
+
+        &.router-link-active {
+            color: $primary;
+            background-color: #EEF2FF !important; // Light indigo background
+            border-right: 3px solid $primary;
+            text-decoration: none !important; // Remove underline when active
+
+            i {
+                color: $primary;
+            }
+        }
+    }
+
+    .sidebar-subheading {
+        color: #9CA3AF !important;
+        font-size: 0.7rem !important;
+        letter-spacing: 0.08em;
+    }
+}
+
+// Topbar Custom
+.navbar {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    background: white !important;
+    padding: 0.75rem 1.5rem;
+}

@@ -1,0 +1,65 @@
+[
+    {
+        "id": "101",
+        "customer_id": "1",
+        "contact_name": "John Doe",
+        "contact_number": "+15550101",
+        "last_message": "How much for the premium plan?",
+        "last_message_at": "2023-10-27T10:00:00Z",
+        "unread_count": 2,
+        "messages": [
+            {
+                "id": "m1",
+                "sender": "user",
+                "text": "Hi",
+                "timestamp": "2023-10-27T09:55:00Z"
+            },
+            {
+                "id": "m2",
+                "sender": "bot",
+                "text": "Hello! How can I help you?",
+                "timestamp": "2023-10-27T09:56:00Z"
+            },
+            {
+                "id": "m3",
+                "sender": "user",
+                "text": "How much for the premium plan?",
+                "timestamp": "2023-10-27T10:00:00Z"
+            }
+        ]
+    },
+    {
+        "id": "102",
+        "customer_id": "1",
+        "contact_name": "Jane Smith",
+        "contact_number": "+15550102",
+        "last_message": "Thanks!",
+        "last_message_at": "2023-10-26T15:30:00Z",
+        "unread_count": 0,
+        "messages": [
+            {
+                "id": "m4",
+                "sender": "user",
+                "text": "Resolved.",
+                "timestamp": "2023-10-26T15:30:00Z"
+            }
+        ]
+    },
+    {
+        "id": "201",
+        "customer_id": "2",
+        "contact_name": "Bob Brown",
+        "contact_number": "+15550201",
+        "last_message": "System down?",
+        "last_message_at": "2023-10-27T11:00:00Z",
+        "unread_count": 1,
+        "messages": [
+            {
+                "id": "m5",
+                "sender": "user",
+                "text": "System down?",
+                "timestamp": "2023-10-27T11:00:00Z"
+            }
+        ]
+    }
+]

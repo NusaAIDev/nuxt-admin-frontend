@@ -1,0 +1,29 @@
+[
+    {
+        "id": "1",
+        "name": "Acme Corp",
+        "email": "contact@acme.com",
+        "phone": "+1234567890",
+        "status": "active",
+        "avatar": "https://ui-avatars.com/api/?name=Acme+Corp&background=random",
+        "system_instruction": "You are a helpful assistant for Acme Corp."
+    },
+    {
+        "id": "2",
+        "name": "Global Tech",
+        "email": "support@globaltech.com",
+        "phone": "+0987654321",
+        "status": "inactive",
+        "avatar": "https://ui-avatars.com/api/?name=Global+Tech&background=random",
+        "system_instruction": "You are a technical support bot."
+    },
+    {
+        "id": "3",
+        "name": "Local Cafe",
+        "email": "hello@localcafe.com",
+        "phone": "+1122334455",
+        "status": "active",
+        "avatar": "https://ui-avatars.com/api/?name=Local+Cafe&background=random",
+        "system_instruction": "You are a friendly barista bot."
+    }
+]
