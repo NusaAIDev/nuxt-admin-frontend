@@ -2,28 +2,57 @@
     {
         "id": "1",
         "name": "Acme Corp",
+        "businessName": "Acme Corporation Ltd",
         "email": "contact@acme.com",
         "phone": "+1234567890",
+        "whatsappNumber": "+6281234567890",
         "status": "active",
-        "avatar": "https://ui-avatars.com/api/?name=Acme+Corp&background=random",
-        "system_instruction": "You are a helpful assistant for Acme Corp."
+        "aiModeDefault": true,
+        "messagesThisMonth": 1250,
+        "createdDate": "2024-01-15",
+        "avatar": "https://ui-avatars.com/api/?name=Acme+Corp&background=4F46E5&color=fff",
+        "systemInstruction": "You are a helpful customer service assistant for Acme Corporation. Be professional and friendly."
     },
     {
         "id": "2",
         "name": "Global Tech",
+        "businessName": "Global Tech Solutions",
         "email": "support@globaltech.com",
         "phone": "+0987654321",
-        "status": "inactive",
-        "avatar": "https://ui-avatars.com/api/?name=Global+Tech&background=random",
-        "system_instruction": "You are a technical support bot."
+        "whatsappNumber": "+6280987654321",
+        "status": "active",
+        "aiModeDefault": true,
+        "messagesThisMonth": 850,
+        "createdDate": "2024-02-20",
+        "avatar": "https://ui-avatars.com/api/?name=Global+Tech&background=10B981&color=fff",
+        "systemInstruction": "You are a technical support bot for Global Tech. Provide clear and concise technical assistance."
     },
     {
         "id": "3",
         "name": "Local Cafe",
+        "businessName": "Local Cafe & Bakery",
         "email": "hello@localcafe.com",
         "phone": "+1122334455",
+        "whatsappNumber": "+6281122334455",
+        "status": "suspended",
+        "aiModeDefault": false,
+        "messagesThisMonth": 320,
+        "createdDate": "2024-03-10",
+        "avatar": "https://ui-avatars.com/api/?name=Local+Cafe&background=F59E0B&color=fff",
+        "systemInstruction": "You are a friendly barista bot for Local Cafe. Help customers with menu items and orders."
+    },
+    {
+        "id": "4",
+        "name": "EduLearn",
+        "businessName": "EduLearn Online Academy",
+        "email": "info@edulearn.com",
+        "phone": "+1555123456",
+        "whatsappNumber": "+6281555123456",
         "status": "active",
-        "avatar": "https://ui-avatars.com/api/?name=Local+Cafe&background=random",
-        "system_instruction": "You are a friendly barista bot."
+        "aiModeDefault": true,
+        "messagesThisMonth": 2100,
+        "createdDate": "2023-12-01",
+        "avatar": "https://ui-avatars.com/api/?name=EduLearn&background=3B82F6&color=fff",
+        "systemInstruction": "You are an educational assistant for EduLearn. Help students with course information and enrollment."
     }
 ]
