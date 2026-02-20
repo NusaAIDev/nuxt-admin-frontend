@@ -15,6 +15,10 @@ export interface Customer {
     industry?: string;
     country?: string;
     timezone?: string;
+    role?: string;
+    address?: string;
+    website?: string;
+    notes?: string;
     integrations?: WhatsAppIntegration[];
 }
 
@@ -26,6 +30,8 @@ export interface WhatsAppIntegration {
     whatsappNumber: string;
     phoneNumberId: string;
     businessAccountId: string;
+    metaBusinessId?: string;
+    businessCategory?: string;
     accessToken: string;
     webhookVerifyToken: string;
     status: 'connected' | 'disconnected';

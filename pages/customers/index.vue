@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div class="p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h3 class="fw-bold text-dark mb-1">Customers</h3>
             <p class="text-secondary mb-0">Manage your AI chatbot customers</p>
         </div>
-        <button class="btn btn-primary shadow-sm">
+        <NuxtLink to="/customers/create" class="btn btn-primary shadow-sm">
             <i class="bi bi-plus-lg me-2"></i>Add Customer
-        </button>
+        </NuxtLink>
     </div>
 
     <!-- Search Bar -->
@@ -84,9 +84,14 @@
                             </td>
                             <td>{{ formatDate(customer.createdDate) }}</td>
                             <td class="text-center">
-                                <button @click="selectCustomer(customer)" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-eye me-1"></i>View
-                                </button>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <NuxtLink :to="`/customers/${customer.id}/profile`" class="btn btn-sm btn-outline-secondary">
+                                        <i class="bi bi-info-circle me-1"></i>Detail
+                                    </NuxtLink>
+                                    <NuxtLink :to="`/customers/${customer.id}/waba-overview`" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-box-arrow-in-right me-1"></i>Open Workspace
+                                    </NuxtLink>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

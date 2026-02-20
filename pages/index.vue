@@ -2,8 +2,8 @@
   <div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h3 class="fw-bold text-dark mb-1">Dashboard</h3>
-            <p class="text-secondary mb-0">Global System Monitoring</p>
+            <h3 class="fw-bold text-dark mb-1">Global Dashboard</h3>
+            <p class="text-secondary mb-0">System-wide monitoring across all customers</p>
         </div>
         <div>
             <button class="btn btn-white border shadow-sm me-2"><i class="bi bi-download me-2"></i>Export Report</button>

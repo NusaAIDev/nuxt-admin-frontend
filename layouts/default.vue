@@ -4,14 +4,16 @@
     <Sidebar />
 
     <!-- Page Content -->
-    <div id="page-content-wrapper" class="w-100 bg-light">
-      <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div id="page-content-wrapper" class="w-100 bg-light d-flex flex-column" style="min-height: 100vh;">
+      <nav class="navbar navbar-expand-lg navbar-light sticky-top bg-white border-bottom">
         <div class="container-fluid">
           <div class="d-flex align-items-center">
              <button class="btn btn-light shadow-sm me-3 border" id="sidebarToggle" @click="toggleSidebar">
                 <i class="bi bi-list fs-5"></i>
             </button>
-            <h5 class="mb-0 text-muted d-none d-md-block">Admin Console</h5>
+            <div class="d-none d-md-flex align-items-center me-auto">
+              <!-- Sidebar toggle is sufficient for navigation -->
+            </div>
           </div>
           
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +47,7 @@
         </div>
       </nav>
 
-      <div class="container-fluid p-4">
+      <div class="container-fluid p-4 flex-grow-1 d-flex flex-column">
         <slot />
       </div>
     </div>
@@ -54,7 +56,9 @@
 
 <script setup lang="ts">
 import Sidebar from '~/components/layout/Sidebar.vue';
+import { useCustomerStore } from '~/stores/customer';
 
+const customerStore = useCustomerStore();
 const isToggled = ref(false);
 
 function toggleSidebar() {
@@ -70,9 +74,9 @@ function toggleSidebar() {
 
 #sidebar-wrapper {
     min-height: 100vh;
-    margin-left: -15rem;
+    margin-left: -260px;
     transition: margin .25s ease-out;
-    z-index: 1000;
+    z-index: 1050; /* Ensure it stays above navbar on small screens */
 }
 
 #sidebar-wrapper .sidebar-heading {
@@ -95,13 +99,13 @@ function toggleSidebar() {
     }
 
     #wrapper.toggled #sidebar-wrapper {
-        margin-left: -15rem;
+        margin-left: -260px;
     }
 }
 
 @media (max-width: 767.98px) {
     #sidebar-wrapper {
-        margin-left: -15rem;
+        margin-left: -260px;
     }
     #wrapper.toggled #sidebar-wrapper {
         margin-left: 0;
