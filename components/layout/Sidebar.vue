@@ -1,102 +1,230 @@
 <template>
-  <div id="sidebar-wrapper" style="height: 100vh; position: sticky; top: 0; z-index: 1050; width: 260px; flex-shrink: 0;">
-    <div class="sidebar-heading py-4 px-4 d-flex align-items-center">
-        <div class="bg-primary text-white rounded p-1 me-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px;">
-            <i class="bi bi-robot fs-5"></i>
-        </div>
-        <span class="fs-5 fw-bold text-dark">AI Admin</span>
+  <div
+    id="sidebar-wrapper"
+    class="border-end bg-white"
+    style="
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      z-index: 1050;
+      width: 260px;
+      flex-shrink: 0;
+    "
+  >
+    <div class="sidebar-heading py-4 px-4 d-flex align-items-center mb-2">
+      <div
+        class="bg-primary text-white rounded-3 p-1 me-3 d-flex align-items-center justify-content-center shadow-sm"
+        style="width: 36px; height: 36px"
+      >
+        <i class="bi bi-robot fs-4"></i>
+      </div>
+      <span class="fs-5 fw-bold text-dark tracking-tight">AI Admin</span>
     </div>
-    
-    <div class="list-group list-group-flush pt-2 overflow-auto" style="height: calc(100vh - 80px);">
+
+    <div
+      class="list-group list-group-flush pt-2 overflow-auto custom-scrollbar"
+      style="height: calc(100vh - 90px)"
+    >
       <!-- GLOBAL NAVIGATION -->
       <template v-if="!customerStore.selectedCustomerId">
-        <div class="px-4 mb-2 text-uppercase text-muted fw-bold extra-small" style="letter-spacing: 1px;">Global Admin</div>
-        
-        <NuxtLink to="/" class="list-group-item list-group-item-action d-flex align-items-center py-3" :class="{ 'active': $route.path === '/' }">
-            <i class="bi bi-speedometer2 me-3"></i> Dashboard
-        </NuxtLink>
-        
-        <NuxtLink to="/customers" class="list-group-item list-group-item-action d-flex align-items-center py-3" :class="{ 'active': $route.path === '/customers' }">
-            <i class="bi bi-people me-3"></i> Customers
+        <div
+          class="px-4 mb-3 text-uppercase text-secondary fw-semibold extra-small"
+          style="letter-spacing: 0.05em; opacity: 0.7"
+        >
+          Global Admin
+        </div>
+
+        <NuxtLink
+          to="/"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path === '/' }"
+        >
+          <i class="bi bi-speedometer2 me-3 fs-5"></i>
+          <span class="fw-medium">Dashboard</span>
         </NuxtLink>
 
-        <div class="px-4 mt-4 mb-2 text-uppercase text-muted fw-bold extra-small" style="letter-spacing: 1px;">System</div>
-        <NuxtLink to="/settings" class="list-group-item list-group-item-action d-flex align-items-center py-3">
-            <i class="bi bi-gear me-3"></i> Settings
+        <NuxtLink
+          to="/customers"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path === '/customers' }"
+        >
+          <i class="bi bi-people me-3 fs-5"></i>
+          <span class="fw-medium">Customers</span>
+        </NuxtLink>
+
+        <div
+          class="px-4 mt-4 mb-3 text-uppercase text-secondary fw-semibold extra-small"
+          style="letter-spacing: 0.05em; opacity: 0.7"
+        >
+          System
+        </div>
+        <NuxtLink
+          to="/settings"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path === '/settings' }"
+        >
+          <i class="bi bi-gear me-3 fs-5"></i>
+          <span class="fw-medium">Settings</span>
         </NuxtLink>
       </template>
 
       <!-- CUSTOMER WORKSPACE NAVIGATION -->
       <template v-else>
-        <div class="px-3 mb-3">
-          <div class="card bg-primary-subtle border-0 rounded-3 p-3 shadow-none">
-            <div class="d-flex align-items-center mb-2">
-              <img :src="customerStore.currentCustomer?.avatar" class="rounded-circle me-2 border bg-white flex-shrink-0 shadow-sm" width="28" height="28">
+        <div class="px-3 mb-4">
+          <div
+            class="card bg-light border-0 rounded-3 p-3 shadow-none overflow-hidden position-relative"
+          >
+            <div class="d-flex align-items-center mb-3">
+              <img
+                :src="customerStore.currentCustomer?.avatar"
+                class="rounded-circle me-3 border-2 border-white shadow-sm"
+                width="36"
+                height="36"
+              />
               <div class="flex-grow-1 min-width-0">
-                <div class="fw-bold small text-truncate text-primary lh-sm">{{ customerStore.currentCustomer?.name }}</div>
-                <div class="d-flex align-items-center mt-1">
-                  <span class="badge extra-small p-1 px-2 rounded-pill fw-bold bg-success text-white" v-if="customerStore.currentCustomer?.status === 'active'" style="font-size: 0.6rem; letter-spacing: 0.5px;">
+                <div class="fw-bold text-dark text-truncate lh-1 mb-1">
+                  {{ customerStore.currentCustomer?.name }}
+                </div>
+                <div class="d-flex align-items-center">
+                  <span
+                    class="badge extra-small px-2 py-1 rounded-pill fw-bold bg-success-subtle text-success border-0"
+                    v-if="customerStore.currentCustomer?.status === 'active'"
+                    style="font-size: 0.6rem"
+                  >
                     ACTIVE
                   </span>
-                  <span class="badge extra-small p-1 px-2 rounded-pill fw-bold bg-danger text-white" v-else style="font-size: 0.6rem; letter-spacing: 0.5px;">
+                  <span
+                    class="badge extra-small px-2 py-1 rounded-pill fw-bold bg-danger-subtle text-danger border-0"
+                    v-else
+                    style="font-size: 0.6rem"
+                  >
                     SUSPENDED
                   </span>
                 </div>
               </div>
             </div>
-            <button @click="exitWorkspace" class="btn btn-sm btn-white w-100 py-1 extra-small fw-bold border shadow-xs text-primary mt-1">
-              <i class="bi bi-arrow-left me-1"></i> Exit Workspace
+            <button
+              @click="exitWorkspace"
+              class="btn btn-sm btn-white w-100 py-1 extra-small fw-semibold border shadow-sm text-secondary transition-all"
+            >
+              <i class="bi bi-box-arrow-left me-1"></i> Exit Workspace
             </button>
           </div>
         </div>
 
-        <div class="px-4 mb-2 text-uppercase text-muted fw-bold extra-small" style="letter-spacing: 1px;">Workspace</div>
+        <div
+          class="px-4 mb-3 text-uppercase text-secondary fw-semibold extra-small"
+          style="letter-spacing: 0.05em; opacity: 0.7"
+        >
+          Workspace
+        </div>
 
-        <NuxtLink :to="`/customers/${customerId}/waba-overview`" class="list-group-item list-group-item-action d-flex align-items-center py-2" :class="{ 'active': $route.path.includes('/waba-overview') }">
-            <i class="bi bi-whatsapp me-3 text-success"></i> WABA Overview
+        <NuxtLink
+          :to="`/customers/${customerId}/waba-overview`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path.includes('/waba-overview') }"
+        >
+          <i class="bi bi-whatsapp me-3 fs-5"></i>
+          <span class="fw-medium">WABA Overview</span>
         </NuxtLink>
 
-        <NuxtLink :to="`/customers/${customerId}/whatsapp`" class="list-group-item list-group-item-action d-flex align-items-center py-2" :class="{ 'active': $route.path.includes('/whatsapp') && !$route.path.endsWith(customerId) }">
-            <i class="bi bi-gear-wide-connected me-3 text-secondary"></i> API Configuration
+        <NuxtLink
+          :to="`/customers/${customerId}/whatsapp`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{
+            active:
+              $route.path.includes('/whatsapp') &&
+              !$route.path.endsWith(customerId),
+          }"
+        >
+          <i class="bi bi-gear-wide-connected me-3 fs-5"></i>
+          <span class="fw-medium">API Configuration</span>
         </NuxtLink>
 
-        <NuxtLink :to="`/customers/${customerId}/templates`" class="list-group-item list-group-item-action d-flex align-items-center py-2" :class="{ 'active': $route.path.includes('/templates') }">
-            <i class="bi bi-file-earmark-text me-3 text-secondary"></i> Message Templates
+        <NuxtLink
+          :to="`/customers/${customerId}/templates`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path.includes('/templates') }"
+        >
+          <i class="bi bi-file-earmark-text me-3 fs-5"></i>
+          <span class="fw-medium">Message Templates</span>
         </NuxtLink>
 
-        <NuxtLink :to="`/customers/${customerId}/inbox`" class="list-group-item list-group-item-action d-flex align-items-center py-2" :class="{ 'active': $route.path.includes('/inbox') }">
-            <i class="bi bi-chat-dots me-3 text-info"></i> Conversation Inbox
+        <NuxtLink
+          :to="`/customers/${customerId}/inbox`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path.includes('/inbox') }"
+        >
+          <i class="bi bi-chat-dots me-3 fs-5"></i>
+          <span class="fw-medium">Conversation Inbox</span>
         </NuxtLink>
 
-        <NuxtLink :to="`/customers/${customerId}/knowledge`" class="list-group-item list-group-item-action d-flex align-items-center py-2" :class="{ 'active': $route.path.includes('/knowledge') }">
-            <i class="bi bi-book me-3 text-primary"></i> Knowledge Base
+        <NuxtLink
+          :to="`/customers/${customerId}/knowledge`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path.includes('/knowledge') }"
+        >
+          <i class="bi bi-book me-3 fs-5"></i>
+          <span class="fw-medium">Knowledge Base</span>
         </NuxtLink>
 
-        <NuxtLink :to="`/customers/${customerId}/usage`" class="list-group-item list-group-item-action d-flex align-items-center py-2" :class="{ 'active': $route.path.includes('/usage') }">
-            <i class="bi bi-graph-up me-3 text-warning"></i> Usage & Cost
+        <NuxtLink
+          :to="`/customers/${customerId}/usage`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path.includes('/usage') }"
+        >
+          <i class="bi bi-graph-up me-3 fs-5"></i>
+          <span class="fw-medium">Usage & Cost</span>
         </NuxtLink>
 
-        <div class="px-4 mt-4 mb-2 text-uppercase text-muted fw-bold extra-small" style="letter-spacing: 1px;">Operations</div>
-        
-        <div 
-          class="list-group-item list-group-item-action d-flex align-items-center justify-content-between py-2" 
-          style="cursor: pointer;"
-          @click="isLogsOpen = !isLogsOpen"
+        <div
+          class="px-4 mt-4 mb-3 text-uppercase text-secondary fw-semibold extra-small"
+          style="letter-spacing: 0.05em; opacity: 0.7"
+        >
+          Operations
+        </div>
+
+        <!-- Logs Parent Item -->
+        <div
+          class="list-group-item list-group-item-action d-flex align-items-center justify-content-between py-2 px-4 mb-1 border-0 rounded-3 mx-2 w-auto"
+          style="cursor: pointer"
+          @click="toggleSubmenu('logs')"
+          :class="{
+            'bg-primary bg-opacity-10 text-primary':
+              activeSubmenu === 'logs' || $route.path.includes('/logs'),
+          }"
         >
           <div class="d-flex align-items-center">
-            <i class="bi bi-file-text me-3"></i>
-            <span>Logs</span>
+            <i class="bi bi-file-text me-3 fs-5"></i>
+            <span class="fw-medium">Logs</span>
           </div>
-          <i :class="['bi bi-chevron-down small transition-transform', { 'rotate-180': isLogsOpen }]"></i>
+          <i
+            :class="[
+              'bi',
+              activeSubmenu === 'logs' ? 'bi-chevron-down' : 'bi-chevron-right',
+              'extra-small',
+            ]"
+          ></i>
         </div>
-        
-        <div v-show="isLogsOpen" class="bg-light-subtle rounded mx-2">
-          <NuxtLink :to="`/customers/${customerId}/logs/webhook`" class="list-group-item list-group-item-action d-flex align-items-center ps-4 py-2 small" :class="{ 'active': $route.path.includes('/logs/webhook') }">
-            Webhook Logs
-          </NuxtLink>
-          <NuxtLink :to="`/customers/${customerId}/logs/ai`" class="list-group-item list-group-item-action d-flex align-items-center ps-4 py-2 small" :class="{ 'active': $route.path.includes('/logs/ai') }">
-            AI Assistant Logs
-          </NuxtLink>
+
+        <!-- Logs Submenu (Accordion) -->
+        <div v-show="activeSubmenu === 'logs'">
+          <div class="bg-light-subtle rounded-3 mx-2 py-1 mb-2">
+            <NuxtLink
+              :to="`/customers/${customerId}/logs/webhook`"
+              class="list-group-item list-group-item-action d-flex align-items-center ps-5 py-2 extra-small mb-1 border-0"
+              :class="{ active: $route.path.includes('/logs/webhook') }"
+            >
+              <span class="fw-medium">Webhook Logs</span>
+            </NuxtLink>
+            <NuxtLink
+              :to="`/customers/${customerId}/logs/ai`"
+              class="list-group-item list-group-item-action d-flex align-items-center ps-5 py-2 extra-small border-0"
+              :class="{ active: $route.path.includes('/logs/ai') }"
+            >
+              <span class="fw-medium">AI Assistant Logs</span>
+            </NuxtLink>
+          </div>
         </div>
       </template>
     </div>
@@ -104,29 +232,54 @@
 </template>
 
 <script setup lang="ts">
-import { useCustomerStore } from '~/stores/customer';
+import { useCustomerStore } from "~/stores/customer";
 
 const customerStore = useCustomerStore();
 const router = useRouter();
 const route = useRoute();
 
 const customerId = computed(() => customerStore.selectedCustomerId);
-const isLogsOpen = ref(route.path.includes('/logs'));
+const activeSubmenu = ref<string>("");
+const isManualToggle = ref(false);
+
+function toggleSubmenu(menu: string) {
+  isManualToggle.value = true;
+  if (activeSubmenu.value === menu) {
+    activeSubmenu.value = "";
+  } else {
+    activeSubmenu.value = menu;
+  }
+}
+
+// Auto-expand menu if current route matches, but only if not manually toggled
+watch(
+  () => route.path,
+  (newPath) => {
+    if (!isManualToggle.value) {
+      if (newPath.includes("/logs")) {
+        activeSubmenu.value = "logs";
+      } else {
+        activeSubmenu.value = "";
+      }
+    }
+  },
+  { immediate: true },
+);
 
 function exitWorkspace() {
   customerStore.selectCustomer(null);
-  router.push('/customers');
+  router.push("/customers");
 }
 </script>
 
 <style scoped>
 .transition-transform {
-    transition: transform 0.2s ease;
+  transition: transform 0.2s ease;
 }
 .rotate-180 {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 .extra-small {
-    font-size: 0.7rem;
+  font-size: 0.7rem;
 }
 </style>

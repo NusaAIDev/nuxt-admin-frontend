@@ -8,8 +8,8 @@
       <nav class="navbar navbar-expand-lg navbar-light sticky-top bg-white border-bottom">
         <div class="container-fluid">
           <div class="d-flex align-items-center">
-             <button class="btn btn-light shadow-sm me-3 border" id="sidebarToggle" @click="toggleSidebar">
-                <i class="bi bi-list fs-5"></i>
+             <button class="btn btn-white border-0 me-3" id="sidebarToggle" @click="toggleSidebar">
+                <i class="bi bi-list fs-4"></i>
             </button>
             <div class="d-none d-md-flex align-items-center me-auto">
               <!-- Sidebar toggle is sufficient for navigation -->
@@ -47,7 +47,7 @@
         </div>
       </nav>
 
-      <div class="container-fluid p-4 flex-grow-1 d-flex flex-column">
+      <div class="container-xl px-4 py-5 flex-grow-1 d-flex flex-column" style="max-width: 1200px; margin: 0 auto;">
         <slot />
       </div>
     </div>
@@ -68,15 +68,23 @@ function toggleSidebar() {
 
 <style scoped>
 #wrapper {
-    overflow-x: hidden;
-    min-height: 100vh;
+    overflow: hidden;
+    height: 100vh;
+    width: 100%;
 }
 
 #sidebar-wrapper {
-    min-height: 100vh;
+    height: 100vh;
     margin-left: -260px;
     transition: margin .25s ease-out;
-    z-index: 1050; /* Ensure it stays above navbar on small screens */
+    z-index: 1050;
+    flex-shrink: 0;
+}
+
+#page-content-wrapper {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #sidebar-wrapper .sidebar-heading {

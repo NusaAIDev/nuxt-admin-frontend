@@ -1,52 +1,61 @@
 <template>
-  <div class="dropdown me-3" v-if="customerStore.selectedCustomerId">
+  <div class="dropdown me-3 border-end pe-3" v-if="customerStore.selectedCustomerId">
     <button 
-      class="btn btn-link text-decoration-none dropdown d-flex align-items-center p-1 rounded-pill hover-bg" 
+      class="btn btn-white border-0 d-flex align-items-center p-2 rounded-3" 
       type="button" 
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
       <img 
         :src="currentCustomer?.avatar || 'https://ui-avatars.com/api/?name=C&background=4F46E5&color=fff'" 
-        class="rounded-circle me-2" 
-        width="24" 
-        height="24"
+        class="rounded-circle me-3 border shadow-xs" 
+        width="28" 
+        height="28"
       >
-      <div class="text-start flex-grow-1 overflow-hidden pe-2">
-        <div class="fw-bold small text-truncate" style="max-width: 150px;">{{ currentCustomer?.name || 'Loading...' }}</div>
+      <div class="text-start pe-2">
+        <div class="fw-bold text-dark lh-1" style="max-width: 140px; font-size: 0.9rem;">{{ currentCustomer?.name || 'Loading...' }}</div>
       </div>
+      <i class="bi bi-chevron-down extra-small text-muted ms-auto"></i>
     </button>
-    <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2" style="width: 300px;">
-      <div class="px-3 py-2 border-bottom mb-2">
-        <input 
-          type="text" 
-          class="form-control form-control-sm" 
-          placeholder="Search customers..." 
-          v-model="search"
-          @click.stop
-        >
+    <div class="dropdown-menu dropdown-menu-end shadow-lg border mt-2 p-2 rounded-3" style="width: 320px;">
+      <div class="px-3 pt-3 pb-2 mb-2">
+        <h6 class="fw-bold text-dark mb-3">Switch Customer</h6>
+        <div class="input-group input-group-sm bg-light rounded-3 px-2">
+            <span class="input-group-text bg-transparent border-0 opacity-50 px-2">
+                <i class="bi bi-search"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control bg-transparent border-0 shadow-none py-2" 
+              placeholder="Search customers..." 
+              v-model="search"
+              @click.stop
+            >
+        </div>
       </div>
-      <div class="overflow-auto" style="max-height: 250px;">
+      <div class="overflow-auto px-1" style="max-height: 280px;">
         <button 
           v-for="c in filteredCustomers" 
           :key="c.id" 
-          class="dropdown-item rounded py-2 d-flex align-items-center mb-1"
-          :class="{ 'active': c.id === customerStore.selectedCustomerId }"
+          class="dropdown-item rounded-3 py-2 px-3 d-flex align-items-center mb-1"
+          :class="{ 'active bg-primary-subtle border-0': c.id === customerStore.selectedCustomerId }"
           @click="switchCustomer(c.id)"
         >
-          <img :src="c.avatar" class="rounded-circle me-3" width="32" height="32">
+          <img :src="c.avatar" class="rounded-circle me-3 border shadow-xs" width="36" height="36">
           <div class="overflow-hidden">
-            <div class="fw-bold small text-truncate">{{ c.name }}</div>
-            <div class="extra-small text-muted text-truncate">{{ c.businessName }}</div>
+            <div class="fw-bold text-dark mb-0" style="font-size: 0.85rem;">{{ c.name }}</div>
+            <div class="extra-small text-secondary text-truncate">{{ c.businessName }}</div>
           </div>
+          <i v-if="c.id === customerStore.selectedCustomerId" class="bi bi-check2 text-primary ms-auto fs-5"></i>
         </button>
-        <div v-if="filteredCustomers.length === 0" class="px-3 py-4 text-center text-muted small">
+        <div v-if="filteredCustomers.length === 0" class="px-3 py-5 text-center text-muted small">
+          <i class="bi bi-search mb-2 d-block fs-3 opacity-25"></i>
           No customers found
         </div>
       </div>
       <div class="border-top mt-2 pt-2 px-2">
-        <NuxtLink to="/customers" class="btn btn-sm btn-light w-100 py-1 text-primary fw-bold">
-          <i class="bi bi-people me-1"></i> View All Customers
+        <NuxtLink to="/customers" class="btn btn-sm btn-light w-100 py-2 text-secondary fw-semibold border-0">
+          <i class="bi bi-grid-fill me-2 opacity-50"></i> View All Customers
         </NuxtLink>
       </div>
     </div>
