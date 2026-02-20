@@ -11,7 +11,24 @@
         "messagesThisMonth": 1250,
         "createdDate": "2024-01-15",
         "avatar": "https://ui-avatars.com/api/?name=Acme+Corp&background=4F46E5&color=fff",
-        "systemInstruction": "You are a helpful customer service assistant for Acme Corporation. Be professional and friendly."
+        "systemInstruction": "You are a helpful customer service assistant for Acme Corporation. Be professional and friendly.",
+        "industry": "Retail",
+        "country": "United States",
+        "timezone": "America/New_York",
+        "integrations": [
+            {
+                "id": "w1",
+                "customerId": "1",
+                "name": "Main Office",
+                "whatsappNumber": "+6281234567890",
+                "phoneNumberId": "10592837465",
+                "businessAccountId": "9876543210",
+                "accessToken": "EAAxxx...",
+                "webhookVerifyToken": "acme_token",
+                "status": "connected",
+                "lastWebhookEventTime": "2026-02-19T10:00:00Z"
+            }
+        ]
     },
     {
         "id": "2",
@@ -25,7 +42,24 @@
         "messagesThisMonth": 850,
         "createdDate": "2024-02-20",
         "avatar": "https://ui-avatars.com/api/?name=Global+Tech&background=10B981&color=fff",
-        "systemInstruction": "You are a technical support bot for Global Tech. Provide clear and concise technical assistance."
+        "systemInstruction": "You are a technical support bot for Global Tech. Provide clear and concise technical assistance.",
+        "industry": "Technology",
+        "country": "United Kingdom",
+        "timezone": "Europe/London",
+        "integrations": [
+            {
+                "id": "w2",
+                "customerId": "2",
+                "name": "Tech Support",
+                "whatsappNumber": "+6280987654321",
+                "phoneNumberId": "20592837465",
+                "businessAccountId": "8876543210",
+                "accessToken": "EAAyyy...",
+                "webhookVerifyToken": "global_token",
+                "status": "connected",
+                "lastWebhookEventTime": "2026-02-19T11:00:00Z"
+            }
+        ]
     },
     {
         "id": "3",
@@ -39,7 +73,11 @@
         "messagesThisMonth": 320,
         "createdDate": "2024-03-10",
         "avatar": "https://ui-avatars.com/api/?name=Local+Cafe&background=F59E0B&color=fff",
-        "systemInstruction": "You are a friendly barista bot for Local Cafe. Help customers with menu items and orders."
+        "systemInstruction": "You are a friendly barista bot for Local Cafe. Help customers with menu items and orders.",
+        "industry": "Food & Beverage",
+        "country": "Indonesia",
+        "timezone": "Asia/Jakarta",
+        "integrations": []
     },
     {
         "id": "4",
@@ -53,6 +91,10 @@
         "messagesThisMonth": 2100,
         "createdDate": "2023-12-01",
         "avatar": "https://ui-avatars.com/api/?name=EduLearn&background=3B82F6&color=fff",
-        "systemInstruction": "You are an educational assistant for EduLearn. Help students with course information and enrollment."
+        "systemInstruction": "You are an educational assistant for EduLearn. Help students with course information and enrollment.",
+        "industry": "Education",
+        "country": "Canada",
+        "timezone": "America/Toronto",
+        "integrations": []
     }
 ]

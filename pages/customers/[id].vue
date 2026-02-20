@@ -29,8 +29,17 @@
 
     <!-- Navigation Buttons -->
     <div class="row g-3 mb-4">
-      <div class="col-6 col-md-3">
-        <NuxtLink :to="`/customers/${customerId}/whatsapp`" class="btn btn-nav w-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.includes('/whatsapp') }">
+      <div class="col-6 col-md">
+        <NuxtLink :to="`/customers/${customerId}/profile`" class="btn btn-nav w-100 h-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.endsWith('/profile') || $route.path.endsWith(`/${customerId}`) }">
+          <div class="icon-box bg-dark-subtle text-dark mb-2">
+            <i class="bi bi-person-badge fs-4"></i>
+          </div>
+          <div class="fw-bold">Profile</div>
+          <div class="small text-muted">Workspace Details</div>
+        </NuxtLink>
+      </div>
+      <div class="col-6 col-md">
+        <NuxtLink :to="`/customers/${customerId}/whatsapp`" class="btn btn-nav w-100 h-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.includes('/whatsapp') }">
           <div class="icon-box bg-success-subtle text-success mb-2">
             <i class="bi bi-whatsapp fs-4"></i>
           </div>
@@ -38,8 +47,8 @@
           <div class="small text-muted">Integration</div>
         </NuxtLink>
       </div>
-      <div class="col-6 col-md-3">
-        <NuxtLink :to="`/customers/${customerId}/knowledge`" class="btn btn-nav w-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.includes('/knowledge') }">
+      <div class="col-6 col-md">
+        <NuxtLink :to="`/customers/${customerId}/knowledge`" class="btn btn-nav w-100 h-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.includes('/knowledge') }">
           <div class="icon-box bg-primary-subtle text-primary mb-2">
             <i class="bi bi-book fs-4"></i>
           </div>
@@ -47,8 +56,17 @@
           <div class="small text-muted">Dataset</div>
         </NuxtLink>
       </div>
-      <div class="col-6 col-md-3">
-        <NuxtLink :to="`/customers/${customerId}/inbox`" class="btn btn-nav w-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.includes('/inbox') }">
+      <div class="col-6 col-md">
+        <NuxtLink :to="`/customers/${customerId}/templates`" class="btn btn-nav w-100 h-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.includes('/templates') }">
+          <div class="icon-box bg-secondary-subtle text-secondary mb-2">
+            <i class="bi bi-file-earmark-text fs-4"></i>
+          </div>
+          <div class="fw-bold">Templates</div>
+          <div class="small text-muted">WhatsApp API</div>
+        </NuxtLink>
+      </div>
+      <div class="col-6 col-md d-none d-lg-block">
+        <NuxtLink :to="`/customers/${customerId}/inbox`" class="btn btn-nav w-100 h-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.includes('/inbox') }">
           <div class="icon-box bg-info-subtle text-info mb-2">
             <i class="bi bi-chat-dots fs-4"></i>
           </div>
@@ -56,8 +74,8 @@
           <div class="small text-muted">Conversations</div>
         </NuxtLink>
       </div>
-      <div class="col-6 col-md-3">
-        <NuxtLink :to="`/customers/${customerId}/usage`" class="btn btn-nav w-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.includes('/usage') }">
+      <div class="col-6 col-md d-none d-lg-block">
+        <NuxtLink :to="`/customers/${customerId}/usage`" class="btn btn-nav w-100 h-100 p-3 shadow-sm border-0" :class="{ 'active': $route.path.includes('/usage') }">
           <div class="icon-box bg-warning-subtle text-warning mb-2">
             <i class="bi bi-graph-up fs-4"></i>
           </div>

@@ -12,11 +12,17 @@ export interface Customer {
     createdDate: string;
     avatar: string;
     systemInstruction: string;
+    industry?: string;
+    country?: string;
+    timezone?: string;
+    integrations?: WhatsAppIntegration[];
 }
 
 // WhatsApp Integration
 export interface WhatsAppIntegration {
+    id: string;
     customerId: string;
+    name: string;
     whatsappNumber: string;
     phoneNumberId: string;
     businessAccountId: string;
@@ -24,6 +30,27 @@ export interface WhatsAppIntegration {
     webhookVerifyToken: string;
     status: 'connected' | 'disconnected';
     lastWebhookEventTime: string | null;
+}
+
+// WhatsApp Template
+export interface WhatsAppTemplate {
+    id: string;
+    customerId: string;
+    name: string;
+    status: 'approved' | 'pending' | 'rejected';
+    category: 'MARKETING' | 'UTILITY' | 'AUTHENTICATION';
+    language: string;
+    lastSynced: string;
+    components: TemplateComponent[];
+    usageCount: number;
+    lastUsed: string | null;
+}
+
+export interface TemplateComponent {
+    type: 'HEADER' | 'BODY' | 'FOOTER' | 'BUTTONS';
+    format?: 'TEXT' | 'IMAGE' | 'VIDEO' | 'DOCUMENT';
+    text?: string;
+    buttons?: any[];
 }
 
 // Knowledge Base
