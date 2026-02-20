@@ -56,16 +56,39 @@
           class="px-4 mt-4 mb-3 text-uppercase text-secondary fw-semibold extra-small"
           style="letter-spacing: 0.05em; opacity: 0.7"
         >
-          System
+          Integrations
         </div>
         <NuxtLink
-          to="/settings"
+          to="/integrations/api-keys"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
-          :class="{ active: $route.path === '/settings' }"
+          :class="{ active: $route.path === '/integrations/api-keys' }"
         >
-          <i class="bi bi-gear me-3 fs-5"></i>
-          <span class="fw-medium">Settings</span>
+          <i class="bi bi-key me-3 fs-5"></i>
+          <span class="fw-medium">API Keys</span>
         </NuxtLink>
+
+        <div
+          class="px-4 mt-4 mb-3 text-uppercase text-secondary fw-semibold extra-small"
+          style="letter-spacing: 0.05em; opacity: 0.7"
+        >
+          Logging
+        </div>
+        <NuxtLink
+          to="/logging/activity"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+        >
+          <i class="bi bi-person-lines-fill me-3 fs-5"></i>
+          <span class="fw-medium">Activity Logs</span>
+        </NuxtLink>
+        <NuxtLink
+          to="/logging/integration"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+        >
+          <i class="bi bi-cpu me-3 fs-5"></i>
+          <span class="fw-medium">Integration Logs</span>
+        </NuxtLink>
+
+        <!-- Settings removed per user request -->
       </template>
 
       <!-- CUSTOMER WORKSPACE NAVIGATION -->
@@ -120,7 +143,7 @@
         </div>
 
         <NuxtLink
-          :to="`/customers/${customerId}/waba-overview`"
+          :to="`/customers/${customerId as string}/waba-overview`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
           :class="{ active: $route.path.includes('/waba-overview') }"
         >
@@ -129,12 +152,12 @@
         </NuxtLink>
 
         <NuxtLink
-          :to="`/customers/${customerId}/whatsapp`"
+          :to="`/customers/${customerId as string}/whatsapp`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
           :class="{
             active:
               $route.path.includes('/whatsapp') &&
-              !$route.path.endsWith(customerId),
+              !$route.path.endsWith(customerId as string),
           }"
         >
           <i class="bi bi-gear-wide-connected me-3 fs-5"></i>
@@ -142,7 +165,7 @@
         </NuxtLink>
 
         <NuxtLink
-          :to="`/customers/${customerId}/templates`"
+          :to="`/customers/${customerId as string}/templates`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
           :class="{ active: $route.path.includes('/templates') }"
         >
@@ -151,7 +174,7 @@
         </NuxtLink>
 
         <NuxtLink
-          :to="`/customers/${customerId}/inbox`"
+          :to="`/customers/${customerId as string}/inbox`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
           :class="{ active: $route.path.includes('/inbox') }"
         >
@@ -160,7 +183,7 @@
         </NuxtLink>
 
         <NuxtLink
-          :to="`/customers/${customerId}/knowledge`"
+          :to="`/customers/${customerId as string}/knowledge`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
           :class="{ active: $route.path.includes('/knowledge') }"
         >
@@ -169,7 +192,7 @@
         </NuxtLink>
 
         <NuxtLink
-          :to="`/customers/${customerId}/usage`"
+          :to="`/customers/${customerId as string}/usage`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
           :class="{ active: $route.path.includes('/usage') }"
         >
@@ -211,14 +234,14 @@
         <div v-show="activeSubmenu === 'logs'">
           <div class="bg-light-subtle rounded-3 mx-2 py-1 mb-2">
             <NuxtLink
-              :to="`/customers/${customerId}/logs/webhook`"
+              :to="`/customers/${customerId as string}/logs/webhook`"
               class="list-group-item list-group-item-action d-flex align-items-center ps-5 py-2 extra-small mb-1 border-0"
               :class="{ active: $route.path.includes('/logs/webhook') }"
             >
               <span class="fw-medium">Webhook Logs</span>
             </NuxtLink>
             <NuxtLink
-              :to="`/customers/${customerId}/logs/ai`"
+              :to="`/customers/${customerId as string}/logs/ai`"
               class="list-group-item list-group-item-action d-flex align-items-center ps-5 py-2 extra-small border-0"
               :class="{ active: $route.path.includes('/logs/ai') }"
             >
@@ -232,6 +255,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useCustomerStore } from "~/stores/customer";
 
 const customerStore = useCustomerStore();

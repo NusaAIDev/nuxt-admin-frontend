@@ -263,10 +263,62 @@
         </div>
       </div>
     </div>
+
+    <!-- Recent Error Logs -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card border-0 shadow-sm overflow-hidden">
+          <div class="card-header py-4 px-4 bg-white border-bottom-0 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold">Recent Error Logs</h5>
+            <NuxtLink to="/logging/activity" class="btn btn-sm btn-link text-decoration-none p-0 text-primary fw-semibold">
+              View All Logs <i class="bi bi-arrow-right ms-1"></i>
+            </NuxtLink>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                  <tr>
+                    <th class="ps-4 py-3 text-secondary fw-semibold extra-small text-uppercase">Timestamp</th>
+                    <th class="py-3 text-secondary fw-semibold extra-small text-uppercase">Event</th>
+                    <th class="py-3 text-secondary fw-semibold extra-small text-uppercase">Message</th>
+                    <th class="py-3 text-secondary fw-semibold extra-small text-uppercase">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="log in recentErrors" :key="log.id" class="cursor-pointer" @click="navigateTo(`/logging/${log.type}`)">
+                    <td class="ps-4 py-3">
+                      <div class="text-dark fw-medium small">{{ formatTime(log.timestamp) }}</div>
+                      <div class="text-secondary extra-small">{{ formatDate(log.timestamp) }}</div>
+                    </td>
+                    <td class="py-3">
+                      <div class="text-dark small fw-bold">{{ log.event }}</div>
+                      <div class="text-secondary extra-small text-uppercase">{{ log.type }}</div>
+                    </td>
+                    <td class="py-3">
+                      <div class="text-secondary small text-truncate" style="max-width: 300px">
+                        {{ log.message }}
+                      </div>
+                    </td>
+                    <td class="py-3">
+                      <span class="badge bg-danger-subtle text-danger border-0 px-2 py-1 extra-small text-uppercase">
+                        Error
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
+import { navigateTo, useHead } from '#imports';
 import type { DashboardMetrics } from "~/types";
 
 // Mock data - in real app this would come from API
@@ -295,6 +347,12 @@ const metrics = ref<DashboardMetrics>({
   },
 });
 
+const recentErrors = ref([
+  { id: '1', timestamp: new Date(Date.now() - 600000).toISOString(), type: 'integration', event: 'Authentication Error', resource: 'Gemini Pro', message: 'Invalid API key provided' },
+  { id: '2', timestamp: new Date(Date.now() - 1200000).toISOString(), type: 'integration', event: 'Webhook Timeout', resource: 'Meta API', message: 'Target URL failed to respond within 30s' },
+  { id: '3', timestamp: new Date(Date.now() - 3600000).toISOString(), type: 'activity', event: 'Database Migration Failed', resource: 'Core App DB', message: 'Migration timeout after 60s' },
+]);
+
 const aiRatioPercent = computed(() => {
   const total =
     metrics.value.aiVsHumanRatio.ai + metrics.value.aiVsHumanRatio.human;
@@ -306,6 +364,11 @@ const aiRatioPercent = computed(() => {
 function formatDate(dateStr: string) {
   const date = new Date(dateStr);
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+function formatTime(dateStr: string) {
+  const date = new Date(dateStr);
+  return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 }
 
 useHead({
