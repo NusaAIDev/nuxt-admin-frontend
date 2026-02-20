@@ -1,141 +1,107 @@
 <template>
-  <div>
-    <!-- Stats Cards -->
-    <div class="row g-3 mb-4">
-      <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-white">
-          <div class="card-body p-3 text-center">
-            <div class="text-secondary small mb-1">Total Templates</div>
-            <div class="h4 fw-bold mb-0">
-              {{ templateStore.templates.length }}
-            </div>
-          </div>
-        </div>
+  <div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="mb-4 d-flex justify-content-between align-items-end">
+      <div>
+        <h2 class="fw-bold text-dark mb-1">WhatsApp Templates</h2>
+        <p class="text-secondary mb-0 small">Manage and sync official message templates from your WhatsApp Cloud API account.</p>
       </div>
-      <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-white">
-          <div class="card-body p-3 text-center">
-            <div class="text-secondary small mb-1">Approved</div>
-            <div class="h4 fw-bold mb-0 text-success">
-              {{
-                templateStore.templates.filter((t) => t.status === "approved")
-                  .length
-              }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-white">
-          <div class="card-body p-3 text-center">
-            <div class="text-secondary small mb-1">Pending</div>
-            <div class="h4 fw-bold mb-0 text-warning">
-              {{
-                templateStore.templates.filter((t) => t.status === "pending")
-                  .length
-              }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-white">
-          <div class="card-body p-3 text-center">
-            <div class="text-secondary small mb-1">Usage Today</div>
-            <div class="h4 fw-bold mb-0 text-primary">12</div>
-          </div>
-        </div>
+      <div class="d-flex gap-2">
+        <NuxtLink
+          :to="`/customers/${customerId}/templates/create`"
+          class="btn btn-outline-primary px-4 d-flex align-items-center gap-2 shadow-sm rounded-3 bg-white"
+        >
+          <i class="bi bi-plus-lg fs-5"></i>
+          <span class="fw-semibold">Create Template</span>
+        </NuxtLink>
+        <button
+          @click="handleSync"
+          class="btn btn-primary px-4 d-flex align-items-center gap-2 shadow-sm rounded-3"
+          :disabled="templateStore.loading"
+        >
+          <div v-if="templateStore.loading" class="spinner-border spinner-border-sm"></div>
+          <i v-else class="bi bi-arrow-repeat fs-5"></i>
+          <span class="fw-semibold">Sync from WhatsApp</span>
+        </button>
       </div>
     </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h4 class="fw-bold mb-1">WhatsApp Templates</h4>
-        <p class="text-secondary small mb-0">
-          Manage and test message templates from WhatsApp Cloud API
-        </p>
-      </div>
-      <button
-        @click="handleSync"
-        class="btn btn-primary d-flex align-items-center"
-        :disabled="templateStore.loading"
-      >
-        <i
-          v-if="templateStore.loading"
-          class="spinner-border spinner-border-sm me-2"
-        ></i>
-        <i v-else class="bi bi-arrow-repeat me-2"></i>
-        Sync from WhatsApp
-      </button>
-    </div>
 
     <!-- Template Table -->
-    <div class="card border-0 shadow-sm">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+      <div class="card-header bg-white py-4 px-4 border-bottom-0 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-dark">Template Repository</h5>
+        <div class="badge bg-light text-secondary fw-normal py-2 px-3 border border-light-subtle rounded-pill extra-small">
+          <i class="bi bi-clock-history me-1"></i> Last synced: {{ lastSyncedTime }}
+        </div>
+      </div>
       <div class="card-body p-0">
         <div class="table-responsive">
           <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
+            <thead class="bg-light">
               <tr>
-                <th class="ps-4">Template Name</th>
-                <th>Category</th>
-                <th>Language</th>
-                <th>Status</th>
-                <th>Last Used</th>
-                <th>Usage</th>
-                <th class="text-end pe-4">Actions</th>
+                <th class="ps-4 py-3 text-secondary fw-bold extra-small text-uppercase tracking-wider">Template Identity</th>
+                <th class="py-3 text-secondary fw-bold extra-small text-uppercase tracking-wider">Classification</th>
+                <th class="py-3 text-secondary fw-bold extra-small text-uppercase tracking-wider">Language</th>
+                <th class="py-3 text-secondary fw-bold extra-small text-uppercase tracking-wider">Meta Status</th>
+                <th class="py-3 text-secondary fw-bold extra-small text-uppercase tracking-wider">Usage Stats</th>
+                <th class="pe-4 py-3 text-end text-secondary fw-bold extra-small text-uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="template in templateStore.templates"
-                :key="template.id"
-              >
-                <td class="ps-4">
-                  <div class="fw-bold">{{ template.name }}</div>
-                  <div class="text-muted extra-small">
-                    ID: {{ template.id }}
-                  </div>
+              <tr v-for="template in templateStore.templates" :key="template.id" class="cursor-pointer" @click="navigateToDetails(template.id)">
+                <td class="ps-4 py-3">
+                  <div class="text-dark fw-bold mb-0">{{ template.name }}</div>
+                  <div class="text-secondary extra-small opacity-75">UID: {{ template.id }}</div>
                 </td>
-                <td>
-                  <span class="badge bg-secondary-subtle text-secondary">{{
-                    template.category
-                  }}</span>
-                </td>
-                <td>
-                  <span class="text-uppercase small">{{
-                    template.language
-                  }}</span>
-                </td>
-                <td>
-                  <span :class="getStatusClass(template.status)">
-                    <i class="bi bi-dot"></i>
-                    {{ template.status.toUpperCase() }}
+                <td class="py-3">
+                  <span class="badge bg-white text-secondary border border-light-subtle px-3 py-1 extra-small text-uppercase fw-bold rounded-pill shadow-xs">
+                    {{ template.category }}
                   </span>
                 </td>
-                <td>
-                  <span class="small text-muted">{{
-                    template.lastUsed ? formatDate(template.lastUsed) : "Never"
-                  }}</span>
+                <td class="py-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-dark text-white extra-small fw-bold px-2 py-1 rounded-3">{{ template.language.split('_')[0].toUpperCase() }}</span>
+                    <span class="text-secondary extra-small">({{ template.language.split('_')[1] }})</span>
+                  </div>
                 </td>
-                <td>
-                  <div class="small fw-bold">{{ template.usageCount }}</div>
+                <td class="py-3">
+                  <div :class="getStatusBadgeClass(template.status)" class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill extra-small fw-bold border-0">
+                    <span class="status-dot" :class="'bg-' + getStatusColor(template.status)"></span>
+                    {{ template.status.toUpperCase() }}
+                  </div>
                 </td>
-                <td class="text-end pe-4">
+                <td class="py-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="text-center">
+                      <div class="text-dark fw-bold extra-small lh-1 mb-1">{{ template.usageCount }}</div>
+                      <div class="text-secondary extra-small opacity-75 text-uppercase fw-semibold" style="font-size: 0.6rem">Sends</div>
+                    </div>
+                    <div class="border-start ps-3">
+                      <div class="text-dark fw-semibold extra-small lh-1 mb-1">
+                        {{ template.lastUsed ? formatDateShort(template.lastUsed) : 'N/A' }}
+                      </div>
+                      <div class="text-secondary extra-small opacity-75 text-uppercase fw-semibold" style="font-size: 0.6rem">Last Used</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="pe-4 py-3 text-end">
                   <NuxtLink
                     :to="`/customers/${customerId}/templates/${template.id}`"
-                    class="btn btn-sm btn-white border shadow-sm"
+                    class="btn btn-sm btn-white border border-light-subtle shadow-xs px-3 py-1 rounded-3 extra-small fw-bold transition-all"
+                    @click.stop
                   >
-                    View & Test
+                    Manage & Test
                   </NuxtLink>
                 </td>
               </tr>
-              <tr
-                v-if="
-                  templateStore.templates.length === 0 && !templateStore.loading
-                "
-              >
-                <td colspan="7" class="text-center py-4 text-muted">
-                  No templates found. Click "Sync" to fetch from WhatsApp.
+              <tr v-if="templateStore.templates.length === 0 && !templateStore.loading">
+                <td colspan="6" class="text-center py-5">
+                  <div class="text-muted opacity-25 mb-3">
+                    <i class="bi bi-whatsapp" style="font-size: 4rem"></i>
+                  </div>
+                  <h6 class="text-secondary fw-bold">No Templates Found</h6>
+                  <p class="text-muted extra-small max-width-250 mx-auto">Your synced templates from Meta will appear here. Click sync to update.</p>
                 </td>
               </tr>
             </tbody>
@@ -143,58 +109,97 @@
         </div>
       </div>
     </div>
-
-    <div class="mt-3 text-end">
-      <p class="text-muted extra-small">Last synced: {{ lastSyncedTime }}</p>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { useTemplateStore } from "~/stores/template";
+import { useHead, navigateTo } from '#imports';
 
 const route = useRoute();
 const templateStore = useTemplateStore();
 const customerId = route.params.id as string;
 
 const lastSyncedTime = computed(() => {
-  if (templateStore.templates.length > 0) {
-    return formatDate(templateStore.templates[0].lastSynced);
+  if (templateStore.templates.length > 0 && templateStore.templates[0].lastSynced) {
+    return new Date(templateStore.templates[0].lastSynced).toLocaleString('en-US', { 
+      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+    });
   }
-  return "Never";
+  return "Never synchronized";
 });
 
 const handleSync = async () => {
   await templateStore.syncTemplates(customerId);
 };
 
-const getStatusClass = (status: string) => {
+const navigateToDetails = (templateId: string) => {
+  navigateTo(`/customers/${customerId}/templates/${templateId}`);
+};
+
+const getStatusBadgeClass = (status: string) => {
   switch (status) {
-    case "approved":
-      return "badge bg-success-subtle text-success";
-    case "pending":
-      return "badge bg-warning-subtle text-warning";
-    case "rejected":
-      return "badge bg-danger-subtle text-danger";
-    default:
-      return "badge bg-secondary-subtle text-secondary";
+    case "approved": return "bg-success-subtle text-success";
+    case "pending": return "bg-warning-subtle text-warning";
+    case "rejected": return "bg-danger-subtle text-danger";
+    default: return "bg-secondary-subtle text-secondary";
   }
 };
 
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleString();
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "approved": return "success";
+    case "pending": return "warning";
+    case "rejected": return "danger";
+    default: return "secondary";
+  }
+};
+
+const formatDateShort = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
 onMounted(async () => {
   await templateStore.fetchTemplates(customerId);
 });
+
+useHead({ title: 'WhatsApp Templates Inventory | AI Admin' });
 </script>
 
 <style scoped>
 .extra-small {
-  font-size: 0.75rem;
+  font-size: 0.725rem;
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 .btn-white {
-  background-color: white;
+  background-color: #fff;
+  color: #475569;
+}
+.btn-white:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1 !important;
+  color: #1e293b;
+}
+.shadow-xs {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.transition-all {
+  transition: all 0.2s ease;
+}
+.max-width-250 {
+  max-width: 250px;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
 }
 </style>

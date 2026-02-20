@@ -55,6 +55,19 @@ export const useTemplateStore = defineStore('template', {
             } finally {
                 this.loading = false;
             }
+        },
+        async createTemplate(customerId: string, data: Partial<WhatsAppTemplate>) {
+            this.loading = true;
+            try {
+                const newTemplate = await templateService.create(customerId, data);
+                this.templates.unshift(newTemplate);
+                return newTemplate;
+            } catch (err: any) {
+                this.error = err.message || 'Failed to create template';
+                return null;
+            } finally {
+                this.loading = false;
+            }
         }
     }
 });

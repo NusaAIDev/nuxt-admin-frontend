@@ -36,6 +36,26 @@ class TemplateService extends BaseService<WhatsAppTemplate> {
         // Simulate success
         return true;
     }
+
+    async create(customerId: string, templateData: Partial<WhatsAppTemplate>): Promise<WhatsAppTemplate> {
+        // Mock creation delay
+        await this.simulateDelay(1000);
+
+        const newTemplate: WhatsAppTemplate = {
+            id: `temp_${Math.random().toString(36).substr(2, 9)}`,
+            customerId,
+            name: templateData.name || 'New Template',
+            status: 'pending',
+            category: (templateData.category as any) || 'MARKETING',
+            language: templateData.language || 'en_US',
+            lastSynced: new Date().toISOString(),
+            components: templateData.components || [],
+            usageCount: 0,
+            lastUsed: null,
+        };
+
+        return newTemplate;
+    }
 }
 
 export const templateService = new TemplateService();
