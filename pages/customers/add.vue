@@ -32,7 +32,7 @@
                     <span v-if="customerStore.loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     Create Customer
                 </button>
-                 <NuxtLink to="/customers" class="btn btn-secondary ms-2">Cancel</NuxtLink>
+                 <NuxtLink to="/organization" class="btn btn-secondary ms-2">Cancel</NuxtLink>
             </form>
         </div>
     </div>
@@ -58,7 +58,7 @@ async function saveCustomer() {
     form.avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(form.name)}&background=random`;
     await customerStore.addCustomer(form);
     if (!customerStore.error) {
-        router.push('/customers');
+        router.push('/organization');
     }
 }
 </script>

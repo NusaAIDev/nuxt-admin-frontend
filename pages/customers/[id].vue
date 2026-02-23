@@ -12,7 +12,7 @@
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
-  <div v-else class="alert alert-danger">Customer not found</div>
+  <div v-else class="alert alert-danger">Organization not found</div>
 </template>
 
 <script setup lang="ts">

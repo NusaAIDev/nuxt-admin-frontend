@@ -19,7 +19,7 @@
     </button>
     <div class="dropdown-menu dropdown-menu-end shadow-lg border mt-2 p-2 rounded-3" style="width: 320px;">
       <div class="px-3 pt-3 pb-2 mb-2">
-        <h6 class="fw-bold text-dark mb-3">Switch Customer</h6>
+        <h6 class="fw-bold text-dark mb-3">Switch Organization</h6>
         <div class="input-group input-group-sm bg-light rounded-3 px-2">
             <span class="input-group-text bg-transparent border-0 opacity-50 px-2">
                 <i class="bi bi-search"></i>
@@ -27,7 +27,7 @@
             <input 
               type="text" 
               class="form-control bg-transparent border-0 shadow-none py-2" 
-              placeholder="Search customers..." 
+              placeholder="Search organizations..."
               v-model="search"
               @click.stop
             >
@@ -50,12 +50,12 @@
         </button>
         <div v-if="filteredCustomers.length === 0" class="px-3 py-5 text-center text-muted small">
           <i class="bi bi-search mb-2 d-block fs-3 opacity-25"></i>
-          No customers found
+          No organizations found
         </div>
       </div>
       <div class="border-top mt-2 pt-2 px-2">
-        <NuxtLink to="/customers" class="btn btn-sm btn-light w-100 py-2 text-secondary fw-semibold border-0">
-          <i class="bi bi-grid-fill me-2 opacity-50"></i> View All Customers
+        <NuxtLink to="/organization" class="btn btn-sm btn-light w-100 py-2 text-secondary fw-semibold border-0">
+          <i class="bi bi-grid-fill me-2 opacity-50"></i> View All Organizations
         </NuxtLink>
       </div>
     </div>
@@ -84,12 +84,14 @@ async function switchCustomer(id: string) {
   
   // Scoped switch: keep the same sub-path if possible
   const pathParts = route.path.split('/');
-  // current path: /customers/[id]/[module]
-  if (pathParts[1] === 'customers' && pathParts[3]) {
+  // current path variants:
+  // - /organization/[id]/[module]
+  // - /organization/[id]/workspace
+  if (pathParts[1] === 'organization' && pathParts[3]) {
     const module = pathParts[3];
-    router.push(`/customers/${id}/${module}`);
+    router.push(`/organization/${id}/${module}`);
   } else {
-    router.push(`/customers/${id}/profile`);
+    router.push(`/organization/${id}/workspace`);
   }
 }
 

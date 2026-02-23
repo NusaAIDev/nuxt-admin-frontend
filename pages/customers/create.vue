@@ -1,21 +1,21 @@
 <template>
   <div class="container py-4">
     <div class="mb-4">
-      <NuxtLink to="/customers" class="btn btn-link text-decoration-none p-0 text-secondary mb-2">
-        <i class="bi bi-arrow-left me-1"></i> Back to Customers
+      <NuxtLink to="/organization" class="btn btn-link text-decoration-none p-0 text-secondary mb-2">
+        <i class="bi bi-arrow-left me-1"></i> Back to Organizations
       </NuxtLink>
-      <h3 class="fw-bold mb-1">Add New Customer</h3>
-      <p class="text-secondary">Onboard a new client and configure their AI assistant workspace.</p>
+      <h3 class="fw-bold mb-1">Add New Organization</h3>
+      <p class="text-secondary">Create organization workspace and primary customer contact details.</p>
     </div>
 
     <form @submit.prevent="handleSubmit">
       <div class="row">
-        <!-- CUSTOMER PROFILE (The User) -->
+        <!-- INTERNAL CONTACT PROFILE -->
         <div class="col-md-6 mb-4">
           <div class="card shadow-sm border-0 h-100">
             <div class="card-header bg-white border-bottom-0 pt-4 px-4">
-              <h5 class="fw-bold mb-0"><i class="bi bi-person me-2"></i>Customer Profile</h5>
-              <p class="text-muted small mb-0">Personal and account details for the platform user.</p>
+              <h5 class="fw-bold mb-0"><i class="bi bi-person me-2"></i>Primary Admin Contact</h5>
+              <p class="text-muted small mb-0">Internal contact details for the organization account.</p>
             </div>
             <div class="card-body px-4">
               <div class="row">
@@ -107,10 +107,10 @@
       </div>
 
       <div class="d-flex justify-content-end gap-3 mt-2">
-        <NuxtLink to="/customers" class="btn btn-light px-4 border ms-auto">Cancel</NuxtLink>
+        <NuxtLink to="/organization" class="btn btn-light px-4 border ms-auto">Cancel</NuxtLink>
         <button type="submit" class="btn btn-primary px-5 shadow-sm" :disabled="loading">
           <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          Create Workspace
+          Create Organization
         </button>
       </div>
     </form>
@@ -148,6 +148,15 @@ async function handleSubmit() {
   try {
     const newCustomerData = {
       ...form,
+      primaryContact: {
+        id: `contact_${Date.now()}`,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        role: form.role,
+        address: form.address,
+        notes: form.notes,
+      },
       status: 'active' as const,
       aiModeDefault: true,
       messagesThisMonth: 0,
@@ -158,11 +167,11 @@ async function handleSubmit() {
     // Store action will return the created customer with ID
     const newCustomer = await customerStore.addCustomer(newCustomerData);
     
-    // Redirect to the new customer's waba-overview
+    // Redirect to workspace entry route
     if (newCustomer && newCustomer.id) {
-        router.push(`/customers/${newCustomer.id}/waba-overview`);
+        router.push(`/organization/${newCustomer.id}/workspace`);
     } else {
-        router.push('/customers');
+        router.push('/organization');
     }
   } catch (err) {
     console.error('Failed to create customer:', err);
@@ -172,7 +181,7 @@ async function handleSubmit() {
 }
 
 useHead({
-  title: 'Add Customer - AI Admin'
+  title: 'Add Organization - AI Admin'
 });
 </script>
 

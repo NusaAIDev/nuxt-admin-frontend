@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { customerService } from '~/services/customer.service';
-import type { Customer } from '~/types';
+import type { Customer, Organization } from '~/types';
 
 export const useCustomerStore = defineStore('customer', {
     state: () => ({
@@ -14,6 +14,9 @@ export const useCustomerStore = defineStore('customer', {
         activeCustomers: (state) => state.customers.filter(c => c.status === 'active'),
         totalCustomers: (state) => state.customers.length,
         selectedCustomer: (state) => state.currentCustomer,
+        organizations: (state) => state.customers as Organization[],
+        totalOrganizations: (state) => state.customers.length,
+        currentOrganization: (state) => state.currentCustomer as Organization | null,
     },
     actions: {
         async fetchCustomers() {
@@ -25,6 +28,9 @@ export const useCustomerStore = defineStore('customer', {
             } finally {
                 this.loading = false;
             }
+        },
+        async fetchOrganizations() {
+            await this.fetchCustomers();
         },
         async fetchCustomerById(id: string) {
             if (this.currentCustomer?.id === id) return;
@@ -44,6 +50,9 @@ export const useCustomerStore = defineStore('customer', {
                 this.loading = false;
             }
         },
+        async fetchOrganizationById(id: string) {
+            await this.fetchCustomerById(id);
+        },
         async selectCustomer(id: string | null) {
             this.selectedCustomerId = id;
             if (id) {
@@ -51,6 +60,9 @@ export const useCustomerStore = defineStore('customer', {
             } else {
                 this.currentCustomer = null;
             }
+        },
+        async selectOrganization(id: string | null) {
+            await this.selectCustomer(id);
         },
         async addCustomer(customer: Omit<Customer, 'id'>) {
             this.loading = true;

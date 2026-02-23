@@ -7,6 +7,39 @@
           Monitor connection status and API details
         </p>
       </div>
+      <div class="d-flex align-items-center gap-2">
+        <span
+          class="badge text-uppercase px-3 py-2"
+          :class="isEditing ? 'bg-warning-subtle text-warning' : 'bg-secondary-subtle text-secondary'"
+        >
+          {{ isEditing ? "Edit Mode" : "View Mode" }}
+        </span>
+        <template v-if="!isEditing">
+          <button class="btn btn-outline-primary" @click="isEditing = true">
+            <i class="bi bi-pencil-square me-1"></i> Edit
+          </button>
+        </template>
+        <template v-else>
+          <button class="btn btn-primary" @click="saveChanges" :disabled="saving">
+            <span
+              v-if="saving"
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Save Changes
+          </button>
+          <button class="btn btn-light border" @click="cancelEdit" :disabled="saving">
+            Cancel
+          </button>
+        </template>
+      </div>
+    </div>
+
+    <div class="alert py-2 mb-4" :class="isEditing ? 'alert-warning' : 'alert-secondary'">
+      {{ isEditing
+        ? "Editing aktif. Status koneksi tetap otomatis dari Meta Cloud API."
+        : "Read-only mode. Klik Edit untuk mengubah konfigurasi API." }}
     </div>
 
     <div class="row">
@@ -28,20 +61,22 @@
                   <input
                     type="text"
                     class="form-control"
-                    :value="whatsappData.whatsappNumber"
-                    readonly
+                    v-model="form.whatsappNumber"
+                    :readonly="!isEditing"
+                    placeholder="+6281234567890"
                   />
                 </div>
               </div>
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-medium"
-                  >Phone Number ID</label
+                  >Meta Business ID</label
                 >
                 <input
                   type="text"
                   class="form-control"
-                  :value="whatsappData.phoneNumberId"
-                  readonly
+                  v-model="form.metaBusinessId"
+                  :readonly="!isEditing"
+                  placeholder="123456789012345"
                 />
               </div>
               <div class="col-md-6">
@@ -51,8 +86,33 @@
                 <input
                   type="text"
                   class="form-control"
-                  :value="whatsappData.businessAccountId"
-                  readonly
+                  v-model="form.businessAccountId"
+                  :readonly="!isEditing"
+                  placeholder="WABA ID / Business Account ID"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-secondary fw-medium"
+                  >Meta App ID</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="form.appId"
+                  :readonly="!isEditing"
+                  placeholder="App ID"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-secondary fw-medium"
+                  >System User ID</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="form.systemUserId"
+                  :readonly="!isEditing"
+                  placeholder="System User ID"
                 />
               </div>
               <div class="col-md-6">
@@ -82,12 +142,14 @@
                   <input
                     :type="showToken ? 'text' : 'password'"
                     class="form-control font-monospace"
-                    :value="whatsappData.accessToken"
-                    readonly
+                    v-model="form.accessToken"
+                    :readonly="!isEditing"
+                    placeholder="EAAB..."
                   />
                   <button
                     class="btn btn-outline-secondary"
                     @click="showToken = !showToken"
+                    type="button"
                   >
                     <i :class="showToken ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
                   </button>
@@ -100,8 +162,21 @@
                 <input
                   type="text"
                   class="form-control font-monospace"
-                  :value="whatsappData.webhookVerifyToken"
-                  readonly
+                  v-model="form.webhookVerifyToken"
+                  :readonly="!isEditing"
+                  placeholder="verify_token_here"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label text-secondary fw-medium"
+                  >Webhook Callback URL</label
+                >
+                <input
+                  type="url"
+                  class="form-control"
+                  v-model="form.webhookCallbackUrl"
+                  :readonly="!isEditing"
+                  placeholder="https://api.example.com/webhook/whatsapp"
                 />
               </div>
               <div class="col-12">
@@ -129,10 +204,10 @@
             <button class="btn btn-primary w-100 mb-2">
               <i class="bi bi-send me-2"></i>Test Send Message
             </button>
-            <button class="btn btn-outline-primary w-100 mb-2">
+            <button class="btn btn-outline-primary w-100 mb-2" :disabled="isEditing">
               <i class="bi bi-arrow-repeat me-2"></i>Reconnect
             </button>
-            <button class="btn btn-outline-danger w-100">
+            <button class="btn btn-outline-danger w-100" :disabled="isEditing">
               <i class="bi bi-x-circle me-2"></i>Disable Integration
             </button>
           </div>
@@ -149,18 +224,72 @@ import type { WhatsAppIntegration } from "~/types";
 const customerStore = useCustomerStore();
 const route = useRoute();
 const showToken = ref(false);
+const isEditing = ref(false);
+const saving = ref(false);
 
 // Mock WhatsApp data - in real app would come from API
 const whatsappData = ref<WhatsAppIntegration>({
+  id: "wa-integration-1",
   customerId: route.params.id as string,
+  name: "Meta Cloud API",
   whatsappNumber: "+6281234567890",
   phoneNumberId: "123456789012345",
   businessAccountId: "BA-987654321",
+  metaBusinessId: "102938475610293",
   accessToken: "EAABsC...XYZ123",
   webhookVerifyToken: "my_webhook_verify_token_12345",
   status: "connected",
   lastWebhookEventTime: "2024-02-13 20:45:30",
 });
+
+type WhatsAppConfigForm = {
+  whatsappNumber: string;
+  businessAccountId: string;
+  metaBusinessId: string;
+  appId: string;
+  systemUserId: string;
+  accessToken: string;
+  webhookVerifyToken: string;
+  webhookCallbackUrl: string;
+};
+
+const form = reactive<WhatsAppConfigForm>({
+  whatsappNumber: whatsappData.value.whatsappNumber,
+  businessAccountId: whatsappData.value.businessAccountId,
+  metaBusinessId: whatsappData.value.metaBusinessId || "",
+  appId: "123456789012345",
+  systemUserId: "998877665544332",
+  accessToken: whatsappData.value.accessToken,
+  webhookVerifyToken: whatsappData.value.webhookVerifyToken,
+  webhookCallbackUrl: "https://api.acme.com/webhook/whatsapp",
+});
+
+const originalForm = ref<WhatsAppConfigForm>({ ...form });
+
+function cancelEdit() {
+  Object.assign(form, originalForm.value);
+  isEditing.value = false;
+}
+
+async function saveChanges() {
+  if (!isEditing.value || saving.value) {
+    return;
+  }
+
+  saving.value = true;
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 350));
+    whatsappData.value.whatsappNumber = form.whatsappNumber;
+    whatsappData.value.businessAccountId = form.businessAccountId;
+    whatsappData.value.metaBusinessId = form.metaBusinessId;
+    whatsappData.value.accessToken = form.accessToken;
+    whatsappData.value.webhookVerifyToken = form.webhookVerifyToken;
+    originalForm.value = { ...form };
+    isEditing.value = false;
+  } finally {
+    saving.value = false;
+  }
+}
 
 useHead({
   title: "WhatsApp Integration - AI Admin",

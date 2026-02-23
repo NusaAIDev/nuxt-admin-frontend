@@ -1,10 +1,18 @@
-// Customer & Business
-export interface Customer {
+// Person responsible from client side (future `customers` table).
+export interface CustomerContact {
     id: string;
     name: string;
-    businessName: string;
     email: string;
     phone: string;
+    role?: string;
+    address?: string;
+    notes?: string;
+}
+
+// Tenant/workspace entity (future `organizations` table).
+export interface Organization {
+    id: string;
+    businessName: string;
     whatsappNumber: string;
     status: 'active' | 'suspended';
     aiModeDefault: boolean;
@@ -15,12 +23,28 @@ export interface Customer {
     industry?: string;
     country?: string;
     timezone?: string;
-    role?: string;
-    address?: string;
     website?: string;
-    notes?: string;
+    metaBusinessId?: string;
+    businessCategory?: string;
+    primaryContactId?: string;
     integrations?: WhatsAppIntegration[];
 }
+
+// Transitional view model used by current UI/API mocks (denormalized join).
+export interface OrganizationWorkspace extends Organization {
+    // Embedded relation
+    primaryContact?: CustomerContact;
+    // Legacy flattened fields kept for backward compatibility in pages/components.
+    name: string;
+    email: string;
+    phone: string;
+    role?: string;
+    address?: string;
+    notes?: string;
+}
+
+// Backward-compatible alias used across current codebase.
+export type Customer = OrganizationWorkspace;
 
 // WhatsApp Integration
 export interface WhatsAppIntegration {

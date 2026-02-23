@@ -11,7 +11,7 @@
       <ul class="nav nav-tabs border-bottom-0">
         <li class="nav-item">
           <NuxtLink
-            :to="`/customers/${customerId}/logs/webhook`"
+            :to="`/organization/${customerId}/logs/webhook`"
             class="nav-link"
             :class="{ active: $route.path.includes('/webhook') }"
           >
@@ -20,7 +20,7 @@
         </li>
         <li class="nav-item">
           <NuxtLink
-            :to="`/customers/${customerId}/logs/ai`"
+            :to="`/organization/${customerId}/logs/ai`"
             class="nav-link"
             :class="{ active: $route.path.includes('/ai') }"
           >

@@ -7,10 +7,10 @@
     </div>
     <h4 class="fw-bold">No Customer Selected</h4>
     <p class="text-secondary mx-auto" style="max-width: 400px;">
-      To access operational modules like Inbox, Templates, or Knowledge Base, you must first select a customer workspace.
+      To access Inbox, Templates, Knowledge Base, and logs, first select a customer workspace.
     </p>
     <div class="mt-4">
-      <NuxtLink to="/customers" class="btn btn-primary px-4">
+      <NuxtLink to="/organization" class="btn btn-primary px-4">
         <i class="bi bi-search me-2"></i>Select a Customer
       </NuxtLink>
     </div>

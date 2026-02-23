@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --clear",
+    "clean": "nuxi cleanup && nuxi prepare",
+    "clean:all": "rm -rf .nuxt .output node_modules/.cache/vite && nuxi prepare",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -13,7 +15,7 @@
     "@pinia/nuxt": "^0.11.3",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
-    "nuxt": "^3.15.4",
+    "nuxt": "3.21.1",
     "pinia": "^3.0.4",
     "sass": "^1.97.3",
     "vue": "^3.5.28",

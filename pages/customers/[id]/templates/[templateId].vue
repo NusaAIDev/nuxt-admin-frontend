@@ -3,7 +3,7 @@
     <!-- Header/Navigation -->
     <div class="mb-4 d-flex align-items-center justify-content-between">
       <div class="d-flex align-items-center gap-3">
-        <NuxtLink :to="`/customers/${customerId}/templates`" class="btn btn-white border border-light-subtle shadow-xs rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px">
+        <NuxtLink :to="`/organization/${customerId}/templates`" class="btn btn-white border border-light-subtle shadow-xs rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px">
           <i class="bi bi-arrow-left fs-5"></i>
         </NuxtLink>
         <div>

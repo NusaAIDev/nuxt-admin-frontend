@@ -2,11 +2,11 @@
   <div>
     <div class="d-flex justify-content-between align-items-end mb-40">
         <div>
-            <h2 class="fw-bold text-dark mb-2">Customers</h2>
-            <p class="text-secondary mb-0 fs-5">Manage your AI chatbot customers and workspaces</p>
+            <h2 class="fw-bold text-dark mb-2">Organizations</h2>
+            <p class="text-secondary mb-0 fs-5">Manage organizations and open workspace modules</p>
         </div>
-        <NuxtLink to="/customers/create" class="btn btn-primary px-4 py-2 shadow-sm">
-            <i class="bi bi-plus-lg me-2"></i>Add Customer
+        <NuxtLink to="/organization/create" class="btn btn-primary px-4 py-2 shadow-sm">
+            <i class="bi bi-plus-lg me-2"></i>Add Organization
         </NuxtLink>
     </div>
 
@@ -17,7 +17,7 @@
                 <span class="input-group-text bg-transparent border-0 pe-2">
                     <i class="bi bi-search text-muted opacity-50"></i>
                 </span>
-                <input type="text" class="form-control border-0 shadow-none fs-6" placeholder="Search by name, business, or number..." v-model="searchQuery">
+                <input type="text" class="form-control border-0 shadow-none fs-6" placeholder="Search by contact name, organization, or number..." v-model="searchQuery">
             </div>
         </div>
     </div>
@@ -38,8 +38,8 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead>
                         <tr>
-                            <th class="ps-4 py-3">Customer</th>
-                            <th class="py-3">Business</th>
+                            <th class="ps-4 py-3">Admin Contact</th>
+                            <th class="py-3">Organization</th>
                             <th class="py-3">WhatsApp</th>
                             <th class="py-3">Status</th>
                             <th class="py-3">AI Mode</th>
@@ -79,9 +79,6 @@
                             <td class="py-3 text-secondary small">{{ formatDate(customer.createdDate) }}</td>
                             <td class="text-end pe-4 py-3">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <NuxtLink :to="`/customers/${customer.id}/profile`" class="btn btn-sm btn-white border shadow-sm px-3" @click.stop>
-                                        Manage
-                                    </NuxtLink>
                                     <button class="btn btn-sm btn-primary px-3 shadow-sm" @click.stop="selectCustomer(customer)">
                                         Open
                                     </button>
@@ -117,7 +114,7 @@ const filteredCustomers = computed(() => {
 
 function selectCustomer(customer: Customer) {
   customerStore.currentCustomer = customer;
-  router.push(`/customers/${customer.id}/whatsapp`);
+  router.push(`/organization/${customer.id}/workspace`);
 }
 
 function formatDate(dateStr: string) {
@@ -126,7 +123,7 @@ function formatDate(dateStr: string) {
 }
 
 useHead({
-  title: 'Customers - AI Admin'
+  title: 'Organizations - AI Admin'
 });
 
 onMounted(() => {

@@ -1,7 +1,28 @@
 <template>
   <div>
-    <!-- Metrics Cards -->
-    <div class="row g-4 mb-4">
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body d-flex flex-wrap align-items-end gap-3">
+        <div>
+          <label class="form-label text-secondary small mb-1">Month</label>
+          <select class="form-select" v-model="selectedMonth">
+            <option v-for="month in monthOptions" :key="month.value" :value="month.value">
+              {{ month.label }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label text-secondary small mb-1">Year</label>
+          <select class="form-select" v-model="selectedYear">
+            <option v-for="year in yearOptions" :key="year" :value="year">{{ year }}</option>
+          </select>
+        </div>
+        <div class="text-secondary small ms-auto">
+          Showing data for <span class="fw-semibold">{{ periodLabel }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4" v-if="usage">
       <div class="col-md-6 col-lg-3">
         <div class="card shadow-sm border-0">
           <div class="card-body">
@@ -36,8 +57,7 @@
       </div>
     </div>
 
-    <!-- Detailed Metrics -->
-    <div class="row mb-4">
+    <div class="row mb-4" v-if="usage">
       <div class="col-lg-6">
         <div class="card shadow-sm border-0">
           <div class="card-header bg-white py-3">
@@ -57,7 +77,7 @@
                 <span class="text-secondary">Total Tokens</span>
                 <span class="fw-bold">{{ usage.totalTokens.toLocaleString() }}</span>
               </div>
-              <hr>
+              <hr />
               <div class="d-flex justify-content-between">
                 <span class="text-secondary fw-medium">Estimated Cost</span>
                 <span class="fw-bold text-primary fs-5">${{ usage.estimatedOpenAiCost.toFixed(2) }}</span>
@@ -82,7 +102,7 @@
                 <span class="text-secondary">Rate per Conversation</span>
                 <span class="fw-medium">$0.005</span>
               </div>
-              <hr>
+              <hr />
               <div class="d-flex justify-content-between">
                 <span class="text-secondary fw-medium">Estimated Cost</span>
                 <span class="fw-bold text-success fs-5">${{ usage.estimatedWaCost.toFixed(2) }}</span>
@@ -93,8 +113,7 @@
       </div>
     </div>
 
-    <!-- Daily Breakdown -->
-    <div class="card shadow-sm border-0" v-if="usage.dailyBreakdown">
+    <div class="card shadow-sm border-0" v-if="usage?.dailyBreakdown">
       <div class="card-header bg-white py-3">
         <h5 class="mb-0 fw-bold">Daily Breakdown</h5>
       </div>
@@ -131,25 +150,82 @@ import type { UsageMetrics } from '~/types';
 const customerStore = useCustomerStore();
 const route = useRoute();
 
-// Mock usage data
-const usage = ref<UsageMetrics>({
-  customerId: route.params.id as string,
-  month: '2024-02',
-  totalMessages: 1250,
-  totalAiRequests: 1180,
-  promptTokens: 45600,
-  completionTokens: 28900,
-  totalTokens: 74500,
-  estimatedOpenAiCost: 3.73,
-  totalWaConversations: 245,
-  estimatedWaCost: 1.23,
-  dailyBreakdown: [
-    { date: '2024-02-01', messages: 45, aiRequests: 42, tokens: 2800 },
-    { date: '2024-02-02', messages: 52, aiRequests: 49, tokens: 3200 },
-    { date: '2024-02-03', messages: 38, aiRequests: 35, tokens: 2400 },
-    { date: '2024-02-04', messages: 61, aiRequests: 58, tokens: 3800 },
-    { date: '2024-02-05', messages: 48, aiRequests: 45, tokens: 3000 }
-  ]
+const now = new Date();
+const currentMonth = String(now.getMonth() + 1).padStart(2, '0');
+const currentYear = String(now.getFullYear());
+
+const selectedMonth = ref(currentMonth);
+const selectedYear = ref(currentYear);
+
+const usageByPeriod = ref<Record<string, UsageMetrics>>({
+  '2026-01': {
+    customerId: route.params.id as string,
+    month: '2026-01',
+    totalMessages: 980,
+    totalAiRequests: 930,
+    promptTokens: 38000,
+    completionTokens: 25100,
+    totalTokens: 63100,
+    estimatedOpenAiCost: 3.11,
+    totalWaConversations: 205,
+    estimatedWaCost: 1.03,
+    dailyBreakdown: [
+      { date: '2026-01-03', messages: 30, aiRequests: 28, tokens: 1800 },
+      { date: '2026-01-12', messages: 35, aiRequests: 33, tokens: 2100 },
+      { date: '2026-01-19', messages: 33, aiRequests: 31, tokens: 2050 },
+    ],
+  },
+  '2026-02': {
+    customerId: route.params.id as string,
+    month: '2026-02',
+    totalMessages: 1250,
+    totalAiRequests: 1180,
+    promptTokens: 45600,
+    completionTokens: 28900,
+    totalTokens: 74500,
+    estimatedOpenAiCost: 3.73,
+    totalWaConversations: 245,
+    estimatedWaCost: 1.23,
+    dailyBreakdown: [
+      { date: '2026-02-01', messages: 45, aiRequests: 42, tokens: 2800 },
+      { date: '2026-02-02', messages: 52, aiRequests: 49, tokens: 3200 },
+      { date: '2026-02-03', messages: 38, aiRequests: 35, tokens: 2400 },
+      { date: '2026-02-04', messages: 61, aiRequests: 58, tokens: 3800 },
+      { date: '2026-02-05', messages: 48, aiRequests: 45, tokens: 3000 },
+    ],
+  },
+});
+
+const periodKey = computed(() => `${selectedYear.value}-${selectedMonth.value}`);
+
+const usage = computed(() => {
+  return usageByPeriod.value[periodKey.value] || usageByPeriod.value['2026-02'];
+});
+
+const monthOptions = [
+  { value: '01', label: 'January' },
+  { value: '02', label: 'February' },
+  { value: '03', label: 'March' },
+  { value: '04', label: 'April' },
+  { value: '05', label: 'May' },
+  { value: '06', label: 'June' },
+  { value: '07', label: 'July' },
+  { value: '08', label: 'August' },
+  { value: '09', label: 'September' },
+  { value: '10', label: 'October' },
+  { value: '11', label: 'November' },
+  { value: '12', label: 'December' },
+];
+
+const yearOptions = computed(() => {
+  const years = new Set(Object.keys(usageByPeriod.value).map((key) => key.split('-')[0]));
+  years.add(currentYear);
+  return Array.from(years).sort((a, b) => Number(b) - Number(a));
+});
+
+const periodLabel = computed(() => {
+  const monthLabel = monthOptions.find((item) => item.value === selectedMonth.value)?.label || selectedMonth.value;
+  return `${monthLabel} ${selectedYear.value}`;
 });
 
 function formatDate(dateStr: string) {
@@ -158,7 +234,7 @@ function formatDate(dateStr: string) {
 }
 
 useHead({
-  title: 'Usage Panel - AI Admin'
+  title: 'Usage Panel - AI Admin',
 });
 
 onMounted(() => {

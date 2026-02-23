@@ -56,9 +56,7 @@
 
 <script setup lang="ts">
 import Sidebar from '~/components/layout/Sidebar.vue';
-import { useCustomerStore } from '~/stores/customer';
 
-const customerStore = useCustomerStore();
 const isToggled = ref(false);
 
 function toggleSidebar() {
@@ -118,5 +116,10 @@ function toggleSidebar() {
     #wrapper.toggled #sidebar-wrapper {
         margin-left: 0;
     }
+}
+
+#sidebarToggle i {
+    position: relative;
+    left: -2px;
 }
 </style>

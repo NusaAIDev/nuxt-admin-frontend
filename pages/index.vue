@@ -4,7 +4,7 @@
       <div>
         <h2 class="fw-bold text-dark mb-2">Global Dashboard</h2>
         <p class="text-secondary mb-0 fs-5">
-          System-wide monitoring across all customers
+          System-wide monitoring across all organizations
         </p>
       </div>
       <div>
@@ -20,7 +20,7 @@
         <div class="card h-100 border-0 shadow-sm">
           <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-start mb-2">
-              <label class="fw-bold text-dark">Total Customers</label>
+              <label class="fw-bold text-dark">Total Organizations</label>
               <div
                 class="bg-primary-subtle text-primary rounded-circle p-2 d-flex align-items-center justify-content-center"
                 style="width: 48px; height: 48px"
