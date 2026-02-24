@@ -26,7 +26,7 @@
       style="height: calc(100vh - 90px)"
     >
       <!-- GLOBAL NAVIGATION -->
-      <template v-if="!customerStore.selectedCustomerId">
+      <template v-if="!isWorkspaceContext">
         <div
           class="px-4 mb-3 text-uppercase text-secondary fw-semibold extra-small"
           style="letter-spacing: 0.05em; opacity: 0.7"
@@ -61,7 +61,7 @@
         <NuxtLink
           to="/integrations/api-keys"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
-          :class="{ active: $route.path === '/integrations/api-keys' }"
+          :class="{ active: $route.path.startsWith('/integrations/api-keys') }"
         >
           <i class="bi bi-key me-3 fs-5"></i>
           <span class="fw-medium">API Keys</span>
@@ -280,6 +280,12 @@ const router = useRouter();
 const route = useRoute();
 
 const customerId = computed(() => customerStore.selectedCustomerId);
+const isWorkspaceRoute = computed(() =>
+  /^\/(organization|customers)\/[^/]+(\/|$)/.test(route.path),
+);
+const isWorkspaceContext = computed(
+  () => Boolean(customerStore.selectedCustomerId) && isWorkspaceRoute.value,
+);
 const activeSubmenu = ref<string>("");
 const isManualToggle = ref(false);
 

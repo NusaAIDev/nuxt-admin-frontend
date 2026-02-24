@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="log in logs" :key="log.id">
+          <tr v-for="log in paginatedLogs" :key="log.id">
             <td class="ps-4 py-3">
               <div class="text-dark fw-medium small">{{ formatTime(log.timestamp) }}</div>
               <div class="text-secondary extra-small">{{ formatDate(log.timestamp) }}</div>
@@ -53,11 +53,19 @@
         </tbody>
       </table>
     </div>
+    <CommonAppPagination
+      v-if="logs.length > 0"
+      :total-items="logs.length"
+      :current-page="currentPage"
+      :per-page="perPage"
+      @update:current-page="currentPage = $event"
+      @update:per-page="perPage = $event"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   logs: Array<{
     id: string;
     timestamp: string;
@@ -70,6 +78,20 @@ defineProps<{
 }>();
 
 const emit = defineEmits(['view-detail']);
+const currentPage = ref(1);
+const perPage = ref(5);
+
+const paginatedLogs = computed(() => {
+  const start = (currentPage.value - 1) * perPage.value;
+  return props.logs.slice(start, start + perPage.value);
+});
+
+watch(
+  () => props.logs.length,
+  () => {
+    currentPage.value = 1;
+  },
+);
 
 const formatTime = (dateStr: string) => {
   return new Date(dateStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });

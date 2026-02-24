@@ -49,7 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="customer in filteredCustomers" :key="customer.id" class="cursor-pointer" @click="selectCustomer(customer)">
+                        <tr v-for="customer in paginatedCustomers" :key="customer.id" class="cursor-pointer" @click="selectCustomer(customer)">
                             <td class="ps-4 py-3">
                                 <div class="d-flex align-items-center">
                                     <img :src="customer.avatar" alt="Avatar" class="rounded-circle me-3 border shadow-xs" width="36" height="36">
@@ -88,6 +88,13 @@
                     </tbody>
                 </table>
             </div>
+            <CommonAppPagination
+              :total-items="filteredCustomers.length"
+              :current-page="currentPage"
+              :per-page="perPage"
+              @update:current-page="currentPage = $event"
+              @update:per-page="perPage = $event"
+            />
         </div>
     </div>
   </div>
@@ -100,6 +107,8 @@ import type { Customer } from '~/types';
 const customerStore = useCustomerStore();
 const router = useRouter();
 const searchQuery = ref('');
+const currentPage = ref(1);
+const perPage = ref(5);
 
 const filteredCustomers = computed(() => {
   if (!searchQuery.value) return customerStore.customers;
@@ -110,6 +119,15 @@ const filteredCustomers = computed(() => {
     c.businessName.toLowerCase().includes(query) ||
     c.whatsappNumber.includes(query)
   );
+});
+
+const paginatedCustomers = computed(() => {
+  const start = (currentPage.value - 1) * perPage.value;
+  return filteredCustomers.value.slice(start, start + perPage.value);
+});
+
+watch(searchQuery, () => {
+  currentPage.value = 1;
 });
 
 function selectCustomer(customer: Customer) {

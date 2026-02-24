@@ -53,9 +53,6 @@
                   Provider
                 </th>
                 <th class="py-3 text-secondary fw-semibold extra-small text-uppercase">
-                  Environment
-                </th>
-                <th class="py-3 text-secondary fw-semibold extra-small text-uppercase">
                   Status
                 </th>
                 <th class="py-3 text-secondary fw-semibold extra-small text-uppercase">
@@ -67,31 +64,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="key in filteredKeys" :key="key.id">
+              <tr v-for="key in paginatedKeys" :key="key.id">
                 <td class="ps-4 py-4">
                   <div class="fw-bold text-dark">{{ key.name }}</div>
                   <div class="text-secondary extra-small">{{ key.id }}</div>
                 </td>
                 <td class="py-4">
-                  <div class="d-flex align-items-center gap-2">
-                    <span
-                      class="provider-icon d-flex align-items-center justify-content-center rounded-2 bg-light"
-                      style="width: 32px; height: 32px"
-                    >
-                      <i :class="getProviderIcon(key.provider)" class="fs-5"></i>
-                    </span>
-                    <span class="fw-medium text-dark">{{ key.provider }}</span>
-                  </div>
-                </td>
-                <td class="py-4">
-                  <span
-                    v-if="key.environment"
-                    class="badge px-3 py-2 rounded-pill fw-medium border-0"
-                    :class="key.environment === 'Production' ? 'bg-primary-subtle text-primary' : 'bg-info-subtle text-info'"
-                  >
-                    {{ key.environment }}
-                  </span>
-                  <span v-else class="text-muted">–</span>
+                  <span class="fw-medium text-dark">{{ key.provider }}</span>
                 </td>
                 <td class="py-4">
                   <span
@@ -112,12 +91,12 @@
                 </td>
                 <td class="pe-4 py-4 text-end">
                   <div class="d-flex justify-content-end gap-2">
-                    <button
+                    <NuxtLink
+                      :to="`/integrations/api-keys/${key.id}/show`"
                       class="btn btn-sm btn-white border shadow-sm px-3"
-                      @click="openModal(key)"
                     >
                       <i class="bi bi-pencil small"></i> Edit
-                    </button>
+                    </NuxtLink>
                     <button
                       class="btn btn-sm px-3"
                       :class="key.isActive ? 'btn-outline-danger' : 'btn-outline-success'"
@@ -131,6 +110,14 @@
             </tbody>
           </table>
         </div>
+        <CommonAppPagination
+          v-if="filteredKeys.length > 0"
+          :total-items="filteredKeys.length"
+          :current-page="currentPage"
+          :per-page="perPage"
+          @update:current-page="currentPage = $event"
+          @update:per-page="perPage = $event"
+        />
 
         <!-- Empty State -->
         <div v-else class="text-center py-5">
@@ -154,200 +141,11 @@
       </div>
     </div>
 
-    <!-- Modal backdrop -->
-    <div
-      v-if="showModal"
-      class="modal-backdrop fade show"
-      @click="closeModal"
-    ></div>
-
-    <!-- Add/Edit Modal -->
-    <div
-      v-if="showModal"
-      class="modal fade"
-      :class="{ show: showModal, 'd-block': showModal }"
-      tabindex="-1"
-      role="dialog"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg p-3">
-          <div class="modal-header border-0 pb-0">
-            <h5 class="modal-title fw-bold">
-              {{ editingKey ? "Edit API Key" : "Add New API Key" }}
-            </h5>
-            <button
-              type="button"
-              class="btn-close shadow-none"
-              @click="closeModal"
-            ></button>
-          </div>
-          <div class="modal-body py-4">
-            <form @submit.prevent="saveKey">
-              <!-- Key Name -->
-              <div class="mb-4">
-                <label class="form-label fw-semibold text-dark small"
-                  >Key Name (alias)</label
-                >
-                <input
-                  v-model="form.name"
-                  type="text"
-                  class="form-control border shadow-sm bg-light-subtle py-2 px-3"
-                  placeholder="e.g. OpenAI Main Prod"
-                  required
-                />
-              </div>
-
-              <!-- Provider -->
-              <div class="mb-4">
-                <label class="form-label fw-semibold text-dark small"
-                  >Provider</label
-                >
-                <select
-                  v-model="form.provider"
-                  class="form-select border shadow-sm bg-light-subtle py-2 px-3"
-                  required
-                >
-                  <option value="" disabled>Select provider...</option>
-                  <option value="OpenAI">OpenAI</option>
-                  <option value="Anthropic">Anthropic</option>
-                  <option value="Google Gemini">Google Gemini</option>
-                  <option value="Mistral">Mistral</option>
-                  <option value="Perplexity">Perplexity</option>
-                </select>
-              </div>
-
-              <!-- API Key -->
-              <div class="mb-4">
-                <label class="form-label fw-semibold text-dark small"
-                  >API Key</label
-                >
-                <div class="input-group">
-                  <input
-                    v-model="form.apiKey"
-                    :type="showFullKey ? 'text' : 'password'"
-                    class="form-control border shadow-sm bg-light-subtle py-2 px-3"
-                    :placeholder="editingKey ? '••••••••••••••••' : 'Enter API Key'"
-                    :required="!editingKey"
-                  />
-                  <button
-                    class="btn btn-white border border-start-0 shadow-sm"
-                    type="button"
-                    @click="showFullKey = !showFullKey"
-                  >
-                    <i class="bi" :class="showFullKey ? 'bi-eye-slash' : 'bi-eye'"></i>
-                  </button>
-                </div>
-                <div v-if="editingKey" class="form-text mt-2 extra-small text-info">
-                  <i class="bi bi-info-circle me-1"></i> Leave blank to keep existing key. For security, full keys are never displayed after saving.
-                </div>
-              </div>
-
-              <!-- Environment -->
-              <div class="mb-4">
-                <label class="form-label fw-semibold text-dark small"
-                  >Environment (optional)</label
-                >
-                <select
-                  v-model="form.environment"
-                  class="form-select border shadow-sm bg-light-subtle py-2 px-3"
-                >
-                  <option value="">No environment</option>
-                  <option value="Production">Production</option>
-                  <option value="Staging">Staging</option>
-                </select>
-              </div>
-
-              <!-- Active Toggle -->
-              <div class="mb-4">
-                <div class="form-check form-switch d-flex align-items-center gap-3 ps-0">
-                  <label class="form-check-label fw-semibold text-dark small mb-0 cursor-pointer" for="activeToggle">
-                    Set as Active
-                  </label>
-                  <input
-                    v-model="form.isActive"
-                    class="form-check-input ms-0 mt-0 shadow-sm cursor-pointer"
-                    type="checkbox"
-                    id="activeToggle"
-                    style="width: 40px; height: 20px"
-                  />
-                </div>
-              </div>
-
-              <!-- Notes -->
-              <div class="mb-0">
-                <label class="form-label fw-semibold text-dark small"
-                  >Notes (optional)</label
-                >
-                <textarea
-                  v-model="form.notes"
-                  class="form-control border shadow-sm bg-light-subtle py-2 px-3"
-                  rows="3"
-                  placeholder="Additional context about this key..."
-                ></textarea>
-              </div>
-
-              <div class="mt-4 pt-2 d-flex justify-content-end gap-2">
-                <button
-                  type="button"
-                  class="btn btn-white border shadow-sm px-4 py-2 fw-semibold"
-                  @click="closeModal"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  class="btn btn-primary px-4 py-2 fw-semibold shadow-sm"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Confirmation Modal for Disabling -->
-    <div
-      v-if="confirmDisableKey"
-      class="modal-backdrop fade show"
-      style="z-index: 1060"
-    ></div>
-    <div
-      v-if="confirmDisableKey"
-      class="modal fade"
-      :class="{ show: confirmDisableKey, 'd-block': confirmDisableKey }"
-      tabindex="-1"
-      style="z-index: 1061"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content border-0 shadow-lg text-center p-4">
-          <div class="mb-3 text-warning">
-            <i class="bi bi-exclamation-triangle-fill fs-1"></i>
-          </div>
-          <h5 class="fw-bold mb-2">Disable API Key?</h5>
-          <p class="text-secondary small mb-4">
-            Features using this key will stop working until it's re-enabled.
-          </p>
-          <div class="d-flex gap-2">
-            <button
-              class="btn btn-white border shadow-sm flex-grow-1"
-              @click="confirmDisableKey = null"
-            >
-              Cancel
-            </button>
-            <button class="btn btn-danger flex-grow-1" @click="proceedToggleStatus">
-              Yes, Disable
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 interface ApiKey {
   id: string;
@@ -386,23 +184,35 @@ const apiKeys = ref<ApiKey[]>([
     isActive: false,
     updatedAt: "2024-01-20T09:15:00Z",
   },
+  {
+    id: "ak_5531mr4",
+    name: "Mistral Production",
+    provider: "Mistral",
+    environment: "Production",
+    isActive: true,
+    updatedAt: "2024-02-18T08:20:00Z",
+  },
+  {
+    id: "ak_7742pp7",
+    name: "Perplexity Ops",
+    provider: "Perplexity",
+    environment: "Production",
+    isActive: true,
+    updatedAt: "2024-02-16T13:05:00Z",
+  },
+  {
+    id: "ak_1108oa3",
+    name: "OpenAI Backup",
+    provider: "OpenAI",
+    environment: "Staging",
+    isActive: false,
+    updatedAt: "2024-02-02T11:10:00Z",
+  },
 ]);
 
 const searchQuery = ref("");
-const showModal = ref(false);
-const showFullKey = ref(false);
-const editingKey = ref<ApiKey | null>(null);
-const confirmDisableKey = ref<ApiKey | null>(null);
-const copied = ref(false);
-
-const form = reactive({
-  name: "",
-  provider: "",
-  apiKey: "",
-  environment: "",
-  isActive: true,
-  notes: "",
-});
+const currentPage = ref(1);
+const perPage = ref(5);
 
 const filteredKeys = computed(() => {
   if (!searchQuery.value) return apiKeys.value;
@@ -412,79 +222,18 @@ const filteredKeys = computed(() => {
   );
 });
 
-function openModal(key: ApiKey) {
-  editingKey.value = key;
-  form.name = key.name;
-  form.provider = key.provider;
-  form.apiKey = ""; // Masked on edit
-  form.environment = key.environment;
-  form.isActive = key.isActive;
-  form.notes = key.notes || "";
-  
-  showFullKey.value = false;
-  showModal.value = true;
-}
+const paginatedKeys = computed(() => {
+  const start = (currentPage.value - 1) * perPage.value;
+  return filteredKeys.value.slice(start, start + perPage.value);
+});
 
-function closeModal() {
-  showModal.value = false;
-}
-
-function saveKey() {
-  if (editingKey.value) {
-    const index = apiKeys.value.findIndex((k) => k.id === editingKey.value?.id);
-    if (index !== -1) {
-      apiKeys.value[index] = {
-        ...apiKeys.value[index],
-        name: form.name,
-        provider: form.provider,
-        environment: form.environment,
-        isActive: form.isActive,
-        notes: form.notes,
-        updatedAt: new Date().toISOString(),
-      };
-    }
-  }
-  closeModal();
-}
-
-function copyToClipboard(text: string) {
-  navigator.clipboard.writeText(text);
-  copied.value = true;
-  setTimeout(() => (copied.value = false), 2000);
-}
+watch(searchQuery, () => {
+  currentPage.value = 1;
+});
 
 function toggleStatus(key: ApiKey) {
-  if (key.isActive) {
-    confirmDisableKey.value = key;
-  } else {
-    key.isActive = true;
-    key.updatedAt = new Date().toISOString();
-  }
-}
-
-function proceedToggleStatus() {
-  if (confirmDisableKey.value) {
-    confirmDisableKey.value.isActive = false;
-    confirmDisableKey.value.updatedAt = new Date().toISOString();
-    confirmDisableKey.value = null;
-  }
-}
-
-function getProviderIcon(provider: string) {
-  switch (provider.toLowerCase()) {
-    case "openai":
-      return "bi bi-openai";
-    case "anthropic":
-      return "bi bi-braces";
-    case "google gemini":
-      return "bi bi-stars";
-    case "mistral":
-      return "bi bi-wind";
-    case "perplexity":
-      return "bi bi-search-heart";
-    default:
-      return "bi bi-cloud";
-  }
+  key.isActive = !key.isActive;
+  key.updatedAt = new Date().toISOString();
 }
 
 function formatDate(dateStr: string) {
@@ -522,10 +271,6 @@ useHead({
   display: inline-block;
 }
 
-.modal-backdrop.show {
-  opacity: 0.5;
-}
-
 .btn-white {
   background-color: #fff;
   color: #475569;
@@ -536,7 +281,4 @@ useHead({
 }
 
 .cursor-pointer { cursor: pointer; }
-
-/* Custom Bootstrap Icons mapping if specific ones aren't available */
-.bi-openai::before { content: "\f57c"; } /* Using robot/AI-like icons as placeholders if needed */
 </style>
