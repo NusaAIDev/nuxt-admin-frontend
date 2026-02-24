@@ -112,7 +112,7 @@
           </div>
 
           <div class="info-card p-3 mb-3">
-            <label class="form-label small text-secondary fw-semibold mb-2">MODE</label>
+            <label class="form-label small text-secondary fw-semibold mb-2">MODE <span class="text-danger">*</span></label>
             <div class="mode-switch" role="group" aria-label="Conversation mode">
               <button 
                 :class="['mode-btn', { active: selectedConversation.mode === 'AI' }]"
@@ -152,16 +152,6 @@
             </div>
           </div>
 
-          <div class="info-card p-3 mb-0" v-if="selectedConversation.aiConfidenceScore">
-            <label class="form-label small text-secondary fw-semibold mb-2">AI CONFIDENCE</label>
-            <div class="d-flex align-items-center justify-content-between mb-1">
-              <span class="h5 fw-bold mb-0 text-dark">{{ (selectedConversation.aiConfidenceScore * 100).toFixed(0) }}%</span>
-              <span class="badge bg-success-subtle text-success">Healthy</span>
-            </div>
-            <div class="progress" style="height: 6px;">
-              <div class="progress-bar bg-success" :style="{ width: (selectedConversation.aiConfidenceScore * 100) + '%' }"></div>
-            </div>
-          </div>
         </div>
         <div v-else class="h-100 d-flex align-items-center justify-content-center text-muted p-3 text-center">
           <p class="small">Select a conversation to view details</p>

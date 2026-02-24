@@ -6,7 +6,7 @@
             <p class="text-secondary mb-0 fs-5">Manage organizations and open workspace modules</p>
         </div>
         <NuxtLink to="/organization/create" class="btn btn-primary px-4 py-2 shadow-sm">
-            <i class="bi bi-plus-lg me-2"></i>Add Organization
+            <i class="bi bi-plus-lg me-2"></i>Create Customer
         </NuxtLink>
     </div>
 
@@ -132,7 +132,7 @@ watch(searchQuery, () => {
 
 function selectCustomer(customer: Customer) {
   customerStore.currentCustomer = customer;
-  router.push(`/organization/${customer.id}/workspace`);
+  router.push(`/organization/${customer.id}/wabas`);
 }
 
 function formatDate(dateStr: string) {

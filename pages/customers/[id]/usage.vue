@@ -3,7 +3,7 @@
     <div class="card shadow-sm border-0 mb-4">
       <div class="card-body d-flex flex-wrap align-items-end gap-3">
         <div>
-          <label class="form-label text-secondary small mb-1">Month</label>
+          <label class="form-label text-secondary small mb-1">Month <span class="text-danger">*</span></label>
           <select class="form-select" v-model="selectedMonth">
             <option v-for="month in monthOptions" :key="month.value" :value="month.value">
               {{ month.label }}
@@ -11,7 +11,7 @@
           </select>
         </div>
         <div>
-          <label class="form-label text-secondary small mb-1">Year</label>
+          <label class="form-label text-secondary small mb-1">Year <span class="text-danger">*</span></label>
           <select class="form-select" v-model="selectedYear">
             <option v-for="year in yearOptions" :key="year" :value="year">{{ year }}</option>
           </select>

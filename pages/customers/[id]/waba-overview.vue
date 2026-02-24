@@ -59,7 +59,7 @@
 
           <div class="row g-4">
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">COMPANY / PT NAME</label>
+              <label class="form-label text-secondary fw-semibold extra-small">COMPANY / PT NAME <span class="text-danger">*</span></label>
               <input
                 type="text"
                 class="form-control"
@@ -69,7 +69,7 @@
               />
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">WABA DISPLAY NAME</label>
+              <label class="form-label text-secondary fw-semibold extra-small">WABA DISPLAY NAME <span class="text-danger">*</span></label>
               <input
                 type="text"
                 class="form-control"
@@ -79,7 +79,7 @@
               />
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">WHATSAPP NUMBER</label>
+              <label class="form-label text-secondary fw-semibold extra-small">WHATSAPP NUMBER <span class="text-danger">*</span></label>
               <input
                 type="text"
                 class="form-control"
@@ -89,7 +89,7 @@
               />
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS CATEGORY</label>
+              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS CATEGORY <span class="text-danger">*</span></label>
               <select class="form-select" v-model="form.businessCategory" :disabled="!isEditing">
                 <option value="">Select category</option>
                 <option value="Retail">Retail</option>
@@ -101,7 +101,7 @@
               </select>
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">WEBSITE URL</label>
+              <label class="form-label text-secondary fw-semibold extra-small">WEBSITE URL <span class="text-danger">*</span></label>
               <input
                 type="url"
                 class="form-control"
@@ -111,7 +111,7 @@
               />
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS EMAIL</label>
+              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS EMAIL <span class="text-danger">*</span></label>
               <input
                 type="email"
                 class="form-control"
@@ -121,7 +121,7 @@
               />
             </div>
             <div class="col-12">
-              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS ADDRESS</label>
+              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS ADDRESS <span class="text-danger">*</span></label>
               <input
                 type="text"
                 class="form-control"
@@ -131,7 +131,7 @@
               />
             </div>
             <div class="col-12">
-              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS DESCRIPTION</label>
+              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS DESCRIPTION <span class="text-danger">*</span></label>
               <textarea
                 class="form-control"
                 rows="3"
@@ -151,7 +151,7 @@
 
           <div class="row g-4">
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">NPWP NUMBER</label>
+              <label class="form-label text-secondary fw-semibold extra-small">NPWP NUMBER <span class="text-danger">*</span></label>
               <input
                 type="text"
                 class="form-control"
@@ -161,22 +161,13 @@
               />
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">COMPANY PROOF DOCUMENT</label>
+              <label class="form-label text-secondary fw-semibold extra-small">COMPANY PROOF DOCUMENT <span class="text-danger">*</span></label>
               <input
                 type="file"
                 class="form-control"
                 :disabled="!isEditing"
                 @change="handleDocumentUpload"
                 accept=".pdf,.jpg,.jpeg,.png"
-              />
-            </div>
-            <div class="col-12">
-              <label class="form-label text-secondary fw-semibold extra-small">UPLOADED FILE</label>
-              <input
-                type="text"
-                class="form-control"
-                :value="form.companyProofFileName || 'No file uploaded'"
-                readonly
               />
             </div>
           </div>
@@ -214,14 +205,6 @@
                 {{ form.displayNameStatus || "PENDING_REVIEW" }}
               </span>
             </div>
-            <div class="d-flex justify-content-between py-2 border-bottom border-light">
-              <span class="text-secondary small">Quality Rating</span>
-              <span class="fw-bold small text-dark">{{ form.qualityRating || "N/A" }}</span>
-            </div>
-            <div class="d-flex justify-content-between py-2 border-bottom border-light">
-              <span class="text-secondary small">Messaging Tier</span>
-              <span class="fw-bold small text-dark">{{ form.messagingTier || "N/A" }}</span>
-            </div>
             <div class="d-flex justify-content-between py-2">
               <span class="text-secondary small">Created At</span>
               <span class="fw-medium small text-dark">{{ formatDate(customer.createdDate) }}</span>
@@ -235,9 +218,30 @@
           <p class="text-danger small opacity-75 mb-3">
             Suspending the workspace will immediately stop all AI responses and webhook processing.
           </p>
-          <button class="btn btn-danger btn-sm text-white px-3 w-100">
+          <button class="btn btn-danger btn-sm text-white px-3 w-100" @click="openSuspendModal">
             <i class="bi bi-slash-circle me-1"></i> Suspend Workspace
           </button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showSuspendModal" class="modal-backdrop-custom">
+      <div class="modal-dialog-custom">
+        <div class="modal-content-custom">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h6 class="fw-bold mb-0">Confirm Suspend Workspace</h6>
+            <button type="button" class="btn-close shadow-none" @click="closeSuspendModal"></button>
+          </div>
+          <p class="text-secondary small mb-4">
+            Are you sure you want to suspend this workspace? This will stop AI replies and webhook processing.
+          </p>
+          <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-light border" @click="closeSuspendModal" :disabled="suspending">Cancel</button>
+            <button class="btn btn-danger" @click="confirmSuspendWorkspace" :disabled="suspending">
+              <span v-if="suspending" class="spinner-border spinner-border-sm me-2"></span>
+              Yes, Suspend
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -248,7 +252,7 @@
 import { useCustomerStore } from "~/stores/customer";
 
 definePageMeta({
-  alias: ["/organization/:id/workspace"],
+  alias: ["/organization/:id/wabas", "/organization/:id/workspace"],
 });
 
 const customerStore = useCustomerStore();
@@ -256,6 +260,8 @@ const customer = computed(() => customerStore.currentCustomer);
 
 const isEditing = ref(false);
 const saving = ref(false);
+const showSuspendModal = ref(false);
+const suspending = ref(false);
 
 const form = reactive({
   legalEntityName: "",
@@ -383,6 +389,28 @@ function handleDocumentUpload(event: Event) {
   form.companyProofFileName = file?.name || "";
 }
 
+function openSuspendModal() {
+  showSuspendModal.value = true;
+}
+
+function closeSuspendModal() {
+  if (suspending.value) return;
+  showSuspendModal.value = false;
+}
+
+async function confirmSuspendWorkspace() {
+  if (!customer.value || suspending.value) return;
+
+  suspending.value = true;
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    customer.value.status = "suspended";
+    showSuspendModal.value = false;
+  } finally {
+    suspending.value = false;
+  }
+}
+
 function formatDate(dateStr: string) {
   if (!dateStr) return "N/A";
   const date = new Date(dateStr);
@@ -419,5 +447,28 @@ useHead({
 
 .edit-mode .card {
   border: 1px solid #e2e8f0 !important;
+}
+
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-dialog-custom {
+  width: 100%;
+  max-width: 460px;
+}
+
+.modal-content-custom {
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.18);
 }
 </style>

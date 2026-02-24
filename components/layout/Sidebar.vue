@@ -146,10 +146,11 @@
         </div>
 
         <NuxtLink
-          :to="`/organization/${customerId as string}/workspace`"
+          :to="`/organization/${customerId as string}/wabas`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
           :class="{
             active:
+              $route.path.includes('/wabas') ||
               $route.path.includes('/workspace') ||
               $route.path.includes('/waba-overview'),
           }"
@@ -222,6 +223,15 @@
         >
           Operations
         </div>
+
+        <NuxtLink
+          :to="`/organization/${customerId as string}/operators`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path.includes('/operators') }"
+        >
+          <i class="bi bi-person-badge me-3 fs-5"></i>
+          <span class="fw-medium">Operator Handover</span>
+        </NuxtLink>
 
         <!-- Logs Parent Item -->
         <div

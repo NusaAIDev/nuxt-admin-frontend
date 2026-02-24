@@ -52,8 +52,7 @@
             <div class="row g-3">
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-medium"
-                  >WhatsApp Number</label
-                >
+                  >WhatsApp Number <span class="text-danger">*</span></label>
                 <div class="input-group">
                   <span class="input-group-text"
                     ><i class="bi bi-whatsapp text-success"></i
@@ -69,8 +68,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-medium"
-                  >Meta Business ID</label
-                >
+                  >Meta Business ID <span class="text-danger">*</span></label>
                 <input
                   type="text"
                   class="form-control"
@@ -81,8 +79,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-medium"
-                  >Business Account ID</label
-                >
+                  >Business Account ID <span class="text-danger">*</span></label>
                 <input
                   type="text"
                   class="form-control"
@@ -93,8 +90,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-medium"
-                  >Meta App ID</label
-                >
+                  >Meta App ID <span class="text-danger">*</span></label>
                 <input
                   type="text"
                   class="form-control"
@@ -105,8 +101,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-medium"
-                  >System User ID</label
-                >
+                  >System User ID <span class="text-danger">*</span></label>
                 <input
                   type="text"
                   class="form-control"
@@ -117,8 +112,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-medium"
-                  >Status</label
-                >
+                  >Status <span class="text-danger">*</span></label>
                 <div>
                   <span
                     :class="{
@@ -136,8 +130,7 @@
               </div>
               <div class="col-12">
                 <label class="form-label text-secondary fw-medium"
-                  >Access Token</label
-                >
+                  >Access Token <span class="text-danger">*</span></label>
                 <div class="input-group">
                   <input
                     :type="showToken ? 'text' : 'password'"
@@ -157,8 +150,7 @@
               </div>
               <div class="col-12">
                 <label class="form-label text-secondary fw-medium"
-                  >Webhook Verify Token</label
-                >
+                  >Webhook Verify Token <span class="text-danger">*</span></label>
                 <input
                   type="text"
                   class="form-control font-monospace"
@@ -169,8 +161,7 @@
               </div>
               <div class="col-12">
                 <label class="form-label text-secondary fw-medium"
-                  >Webhook Callback URL</label
-                >
+                  >Webhook Callback URL <span class="text-danger">*</span></label>
                 <input
                   type="url"
                   class="form-control"
@@ -181,8 +172,7 @@
               </div>
               <div class="col-12">
                 <label class="form-label text-secondary fw-medium"
-                  >Last Webhook Event</label
-                >
+                  >Last Webhook Event <span class="text-danger">*</span></label>
                 <input
                   type="text"
                   class="form-control"

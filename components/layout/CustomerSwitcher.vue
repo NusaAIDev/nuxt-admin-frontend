@@ -86,12 +86,12 @@ async function switchCustomer(id: string) {
   const pathParts = route.path.split('/');
   // current path variants:
   // - /organization/[id]/[module]
-  // - /organization/[id]/workspace
+  // - /organization/[id]/wabas
   if (pathParts[1] === 'organization' && pathParts[3]) {
     const module = pathParts[3];
     router.push(`/organization/${id}/${module}`);
   } else {
-    router.push(`/organization/${id}/workspace`);
+    router.push(`/organization/${id}/wabas`);
   }
 }
 

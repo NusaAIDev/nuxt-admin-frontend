@@ -49,8 +49,7 @@
             <form @submit.prevent="saveChanges">
               <div class="mb-4">
                 <label for="systemPrompt" class="form-label fw-bold"
-                  >System Prompt</label
-                >
+                  >System Prompt <span class="text-danger">*</span></label>
                 <textarea
                   class="form-control"
                   id="systemPrompt"
@@ -67,8 +66,7 @@
               <div class="row">
                 <div class="col-md-6 mb-4">
                   <label for="temperature" class="form-label fw-bold"
-                    >Temperature (Creativity)</label
-                  >
+                    >Temperature (Creativity) <span class="text-danger">*</span></label>
                   <div class="d-flex align-items-center gap-3">
                     <input
                       type="range"
@@ -84,7 +82,7 @@
                   </div>
                 </div>
                 <div class="col-md-6 mb-4">
-                  <label for="model" class="form-label fw-bold">Model</label>
+                  <label for="model" class="form-label fw-bold">Model <span class="text-danger">*</span></label>
                   <select class="form-select" id="model" v-model="form.model" :disabled="!isEditing">
                     <option>GPT-4o</option>
                     <option>GPT-3.5 Turbo</option>
@@ -102,8 +100,7 @@
                   :disabled="!isEditing"
                 />
                 <label class="form-check-label fw-medium" for="webSearch"
-                  >Enable Web Search</label
-                >
+                  >Enable Web Search <span class="text-danger">*</span></label>
               </div>
 
               <div class="d-flex justify-content-end" v-if="isEditing">
