@@ -17,6 +17,10 @@
               <p class="text-muted small mb-0">Person in charge from customer side.</p>
             </div>
             <div class="card-body px-4">
+              <div class="mb-3">
+                <label class="form-label fw-medium">Organization Name <span class="text-danger">*</span></label>
+                <input type="text" v-model="form.organizationName" class="form-control" placeholder="e.g. Acme Corporation Ltd" required>
+              </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label class="form-label fw-medium">Full Name <span class="text-danger">*</span></label>
@@ -68,6 +72,7 @@ const router = useRouter();
 const loading = ref(false);
 
 const form = reactive({
+  organizationName: '',
   name: '',
   email: '',
   whatsappNumber: '',
@@ -82,7 +87,7 @@ async function handleSubmit() {
     const newCustomerData = {
       ...form,
       phone: form.whatsappNumber,
-      businessName: form.name,
+      businessName: form.organizationName,
       whatsappNumber: form.whatsappNumber,
       website: '',
       metaBusinessId: '',
@@ -102,7 +107,7 @@ async function handleSubmit() {
       aiModeDefault: true,
       messagesThisMonth: 0,
       createdDate: new Date().toISOString(),
-      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(form.name)}&background=random&color=fff`,
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(form.organizationName)}&background=random&color=fff`,
     };
 
     // Store action will return the created customer with ID
