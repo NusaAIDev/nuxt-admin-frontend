@@ -88,8 +88,8 @@ async function switchCustomer(id: string) {
   // - /organization/[id]/[module]
   // - /organization/[id]/wabas
   if (pathParts[1] === 'organization' && pathParts[3]) {
-    const module = pathParts[3];
-    router.push(`/organization/${id}/${module}`);
+    const subPath = pathParts.slice(3).filter(Boolean).join('/');
+    router.push(`/organization/${id}/${subPath}`);
   } else {
     router.push(`/organization/${id}/wabas`);
   }

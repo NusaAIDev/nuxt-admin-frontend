@@ -1,11 +1,6 @@
 <template>
   <div v-if="customer" class="h-100 d-flex flex-column">
-    <template v-if="customer">
-      <NuxtPage />
-    </template>
-    <template v-else>
-      <SelectionRequired />
-    </template>
+    <NuxtPage />
   </div>
   <div v-else-if="loading" class="text-center py-5">
     <div class="spinner-border text-primary" role="status">
@@ -17,7 +12,6 @@
 
 <script setup lang="ts">
 import { useCustomerStore } from "~/stores/customer";
-import SelectionRequired from "~/components/common/SelectionRequired.vue";
 
 const route = useRoute();
 const customerStore = useCustomerStore();
@@ -35,9 +29,3 @@ onMounted(async () => {
   }
 });
 </script>
-
-<style scoped>
-.min-vh-75 {
-  min-height: 75vh;
-}
-</style>

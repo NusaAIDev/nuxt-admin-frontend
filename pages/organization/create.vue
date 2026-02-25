@@ -32,6 +32,10 @@
                 <input type="email" v-model="form.email" class="form-control" placeholder="john@example.com" required>
               </div>
               <div class="mb-3">
+                <label class="form-label fw-medium">WA Number <span class="text-danger">*</span></label>
+                <input type="text" v-model="form.whatsappNumber" class="form-control" placeholder="+628123456789" required>
+              </div>
+              <div class="mb-3">
                 <label class="form-label fw-medium">Address</label>
                 <input type="text" v-model="form.address" class="form-control" placeholder="Street, City, State">
               </div>
@@ -66,6 +70,7 @@ const loading = ref(false);
 const form = reactive({
   name: '',
   email: '',
+  whatsappNumber: '',
   role: '',
   address: '',
   notes: '',
@@ -76,9 +81,9 @@ async function handleSubmit() {
   try {
     const newCustomerData = {
       ...form,
-      phone: '',
+      phone: form.whatsappNumber,
       businessName: form.name,
-      whatsappNumber: '',
+      whatsappNumber: form.whatsappNumber,
       website: '',
       metaBusinessId: '',
       businessCategory: '',
@@ -88,7 +93,7 @@ async function handleSubmit() {
         id: `contact_${Date.now()}`,
         name: form.name,
         email: form.email,
-        phone: '',
+        phone: form.whatsappNumber,
         role: form.role,
         address: form.address,
         notes: form.notes,

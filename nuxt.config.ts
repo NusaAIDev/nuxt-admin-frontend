@@ -23,29 +23,5 @@ export default defineNuxtConfig({
         }
       }
     }
-  },
-  hooks: {
-    "pages:extend"(pages) {
-      const addOrganizationAlias = (page: any) => {
-        if (typeof page.path === "string" && page.path.startsWith("/customers")) {
-          const aliasPath = page.path.replace(/^\/customers/, "/organization");
-          const aliases = Array.isArray(page.alias)
-            ? page.alias
-            : page.alias
-              ? [page.alias]
-              : [];
-
-          if (!aliases.includes(aliasPath)) {
-            page.alias = [...aliases, aliasPath];
-          }
-        }
-
-        if (Array.isArray(page.children)) {
-          page.children.forEach(addOrganizationAlias);
-        }
-      };
-
-      pages.forEach(addOrganizationAlias);
-    },
-  },
+  }
 })

@@ -291,7 +291,7 @@ const route = useRoute();
 
 const customerId = computed(() => customerStore.selectedCustomerId);
 const isWorkspaceRoute = computed(() =>
-  /^\/(organization|customers)\/[^/]+(\/|$)/.test(route.path),
+  /^\/organization\/[^/]+(\/|$)/.test(route.path),
 );
 const isWorkspaceContext = computed(
   () => Boolean(customerStore.selectedCustomerId) && isWorkspaceRoute.value,

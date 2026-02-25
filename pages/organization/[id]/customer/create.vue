@@ -23,6 +23,10 @@
             <label class="form-label text-secondary fw-semibold extra-small">EMAIL ADDRESS <span class="text-danger">*</span></label>
             <input type="email" class="form-control" v-model="form.email" required />
           </div>
+          <div class="col-md-6">
+            <label class="form-label text-secondary fw-semibold extra-small">NO. WHATSAPP <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" v-model="form.whatsappNumber" required />
+          </div>
           <div class="col-12">
             <label class="form-label text-secondary fw-semibold extra-small">ADDRESS <span class="text-danger">*</span></label>
             <input type="text" class="form-control" v-model="form.address" required />
@@ -47,7 +51,7 @@ import { useWorkspaceCustomers } from "~/composables/useWorkspaceCustomers";
 import { useCustomerStore } from "~/stores/customer";
 
 definePageMeta({
-  alias: ["/organization/:id/customer/create", "/customers/:id/customer/create"],
+  alias: ["/organization/:id/customer/create"],
 });
 
 const route = useRoute();
@@ -60,6 +64,7 @@ const form = reactive({
   fullName: "",
   jobRole: "",
   email: "",
+  whatsappNumber: "",
   address: "",
   internalNotes: "",
 });
@@ -69,6 +74,7 @@ function handleCreate() {
     fullName: form.fullName,
     jobRole: form.jobRole,
     email: form.email,
+    whatsappNumber: form.whatsappNumber,
     address: form.address,
     internalNotes: form.internalNotes,
     roleType: "operator",
@@ -88,6 +94,10 @@ onMounted(async () => {
       fullName: customerStore.currentCustomer.name || "",
       jobRole: customerStore.currentCustomer.role || "",
       email: customerStore.currentCustomer.email || "",
+      whatsappNumber:
+        customerStore.currentCustomer.whatsappNumber ||
+        customerStore.currentCustomer.phone ||
+        "",
       address: customerStore.currentCustomer.address || "",
       internalNotes: customerStore.currentCustomer.notes || "",
     });

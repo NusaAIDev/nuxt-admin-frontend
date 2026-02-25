@@ -52,6 +52,10 @@
           <label class="form-label text-secondary fw-semibold extra-small">EMAIL ADDRESS <span class="text-danger">*</span></label>
           <input type="email" class="form-control" v-model="form.email" :readonly="!isEditing" />
         </div>
+        <div class="col-md-6">
+          <label class="form-label text-secondary fw-semibold extra-small">NO. WHATSAPP <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" v-model="form.whatsappNumber" :readonly="!isEditing" />
+        </div>
         <div class="col-12">
           <label class="form-label text-secondary fw-semibold extra-small">ADDRESS <span class="text-danger">*</span></label>
           <input type="text" class="form-control" v-model="form.address" :readonly="!isEditing" />
@@ -115,7 +119,7 @@ import { useWorkspaceCustomers } from "~/composables/useWorkspaceCustomers";
 import { useCustomerStore } from "~/stores/customer";
 
 definePageMeta({
-  alias: ["/organization/:id/customer/:customerId", "/customers/:id/customer/:customerId"],
+  alias: ["/organization/:id/customer/:customerId"],
 });
 
 const route = useRoute();
@@ -139,6 +143,7 @@ const form = reactive({
   fullName: "",
   jobRole: "",
   email: "",
+  whatsappNumber: "",
   address: "",
   internalNotes: "",
 });
@@ -151,6 +156,7 @@ watch(
       fullName: value.fullName || "",
       jobRole: value.jobRole || "",
       email: value.email || "",
+      whatsappNumber: value.whatsappNumber || "",
       address: value.address || "",
       internalNotes: value.internalNotes || "",
     });
@@ -167,6 +173,10 @@ onMounted(async () => {
       fullName: customerStore.currentCustomer.name || "",
       jobRole: customerStore.currentCustomer.role || "",
       email: customerStore.currentCustomer.email || "",
+      whatsappNumber:
+        customerStore.currentCustomer.whatsappNumber ||
+        customerStore.currentCustomer.phone ||
+        "",
       address: customerStore.currentCustomer.address || "",
       internalNotes: customerStore.currentCustomer.notes || "",
     });
@@ -180,6 +190,7 @@ function cancelEdit() {
     fullName: contact.value.fullName || "",
     jobRole: contact.value.jobRole || "",
     email: contact.value.email || "",
+    whatsappNumber: contact.value.whatsappNumber || "",
     address: contact.value.address || "",
     internalNotes: contact.value.internalNotes || "",
   });
@@ -194,6 +205,7 @@ async function saveChanges() {
       fullName: form.fullName,
       jobRole: form.jobRole,
       email: form.email,
+      whatsappNumber: form.whatsappNumber,
       address: form.address,
       internalNotes: form.internalNotes,
     });

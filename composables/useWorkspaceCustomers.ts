@@ -6,6 +6,7 @@ export interface WorkspaceCustomerContact {
   fullName: string;
   jobRole: string;
   email: string;
+  whatsappNumber: string;
   address: string;
   internalNotes: string;
   roleType: WorkspaceCustomerRole;
@@ -24,6 +25,7 @@ export function useWorkspaceCustomers(organizationId: string) {
     fullName: string;
     jobRole?: string;
     email?: string;
+    whatsappNumber?: string;
     address?: string;
     internalNotes?: string;
   }) => {
@@ -36,6 +38,7 @@ export function useWorkspaceCustomers(organizationId: string) {
         fullName: primary.fullName || "Primary Contact",
         jobRole: primary.jobRole || "",
         email: primary.email || "",
+        whatsappNumber: primary.whatsappNumber || "",
         address: primary.address || "",
         internalNotes: primary.internalNotes || "",
         roleType: "primary",
@@ -48,6 +51,7 @@ export function useWorkspaceCustomers(organizationId: string) {
         fullName: "Support Admin 1",
         jobRole: "Customer Support",
         email: "support1@acme.com",
+        whatsappNumber: "",
         address: "",
         internalNotes: "",
         roleType: "operator",

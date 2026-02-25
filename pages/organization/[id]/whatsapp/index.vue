@@ -191,9 +191,6 @@
             <h5 class="mb-0 fw-bold">Actions</h5>
           </div>
           <div class="card-body">
-            <button class="btn btn-primary w-100 mb-2">
-              <i class="bi bi-send me-2"></i>Test Send Message
-            </button>
             <button class="btn btn-outline-primary w-100 mb-2" :disabled="isEditing">
               <i class="bi bi-arrow-repeat me-2"></i>Reconnect
             </button>

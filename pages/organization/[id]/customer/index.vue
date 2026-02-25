@@ -78,9 +78,7 @@ import { useWorkspaceCustomers } from "~/composables/useWorkspaceCustomers";
 definePageMeta({
   alias: [
     "/organization/:id/customer",
-    "/customers/:id/customer",
     "/organization/:id/profile",
-    "/customers/:id/profile",
   ],
 });
 
@@ -101,6 +99,7 @@ watch(
       fullName: value.name || "",
       jobRole: value.role || "",
       email: value.email || "",
+      whatsappNumber: value.whatsappNumber || value.phone || "",
       address: value.address || "",
       internalNotes: value.notes || "",
     });
@@ -113,17 +112,11 @@ function toggleAssigned(contactId: string) {
 }
 
 function goToCreateCustomer() {
-  const orgPath = `/organization/${organizationId}/customer/create`;
-  const fallbackPath = `/customers/${organizationId}/customer/create`;
-  const target = router.resolve(orgPath).matched.length ? orgPath : fallbackPath;
-  router.push(target);
+  router.push(`/organization/${organizationId}/customer/create`);
 }
 
 function goToCustomerDetail(contactId: string) {
-  const orgPath = `/organization/${organizationId}/customer/${contactId}`;
-  const fallbackPath = `/customers/${organizationId}/customer/${contactId}`;
-  const target = router.resolve(orgPath).matched.length ? orgPath : fallbackPath;
-  router.push(target);
+  router.push(`/organization/${organizationId}/customer/${contactId}`);
 }
 
 onMounted(() => {

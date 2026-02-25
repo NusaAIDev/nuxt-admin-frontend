@@ -53,7 +53,7 @@
 import { computed } from "vue";
 
 definePageMeta({
-  alias: ["/organization/:id/operator-handover", "/customers/:id/operators"],
+  alias: ["/organization/:id/operator-handover"],
 });
 
 type HandoverStatus = "pending" | "accepted" | "resolved" | "timeout";
