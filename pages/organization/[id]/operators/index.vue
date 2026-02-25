@@ -23,7 +23,6 @@
                 <th>Event</th>
                 <th>Assigned To</th>
                 <th>Total Messages</th>
-                <th>Status</th>
                 <th>Detail</th>
               </tr>
             </thead>
@@ -34,11 +33,6 @@
                 <td>{{ event.event }}</td>
                 <td>{{ event.assignedTo || "-" }}</td>
                 <td>{{ event.totalMessages }}</td>
-                <td>
-                  <span class="badge" :class="statusClass(event.status)">
-                    {{ event.status.toUpperCase() }}
-                  </span>
-                </td>
                 <td>{{ event.detail }}</td>
               </tr>
             </tbody>
@@ -56,8 +50,6 @@ definePageMeta({
   alias: ["/organization/:id/operator-handover"],
 });
 
-type HandoverStatus = "pending" | "accepted" | "resolved" | "timeout";
-
 interface HandoverEvent {
   id: string;
   conversationId: string;
@@ -66,7 +58,6 @@ interface HandoverEvent {
   detail: string;
   assignedTo: string | null;
   totalMessages: number;
-  status: HandoverStatus;
 }
 
 const handoverEvents = computed<HandoverEvent[]>(() => [
@@ -78,7 +69,6 @@ const handoverEvents = computed<HandoverEvent[]>(() => [
     detail: "Customer asked deep technical integration question.",
     assignedTo: null,
     totalMessages: 18,
-    status: "pending",
   },
   {
     id: "evt_002",
@@ -88,7 +78,6 @@ const handoverEvents = computed<HandoverEvent[]>(() => [
     detail: "User replied: 'yes, connect me to admin'.",
     assignedTo: "Admin User",
     totalMessages: 24,
-    status: "accepted",
   },
   {
     id: "evt_003",
@@ -98,24 +87,8 @@ const handoverEvents = computed<HandoverEvent[]>(() => [
     detail: "Issue solved after manual follow-up.",
     assignedTo: "Admin User",
     totalMessages: 31,
-    status: "resolved",
   },
 ]);
-
-const statusClass = (status: HandoverStatus) => {
-  switch (status) {
-    case "pending":
-      return "bg-warning-subtle text-warning border border-warning-subtle";
-    case "accepted":
-      return "bg-info-subtle text-info border border-info-subtle";
-    case "resolved":
-      return "bg-success-subtle text-success border border-success-subtle";
-    case "timeout":
-      return "bg-danger-subtle text-danger border border-danger-subtle";
-    default:
-      return "bg-secondary-subtle text-secondary border border-secondary-subtle";
-  }
-};
 
 const formatDate = (dateStr: string) =>
   new Date(dateStr).toLocaleString("en-US", {
