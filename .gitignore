@@ -12,6 +12,8 @@ node_modules
 # Logs
 logs
 *.log
+!pages/organization/\[id\]/logs/
+!pages/organization/\[id\]/logs/*.vue
 
 # Misc
 .DS_Store
