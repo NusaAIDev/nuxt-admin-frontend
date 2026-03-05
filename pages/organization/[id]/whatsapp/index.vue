@@ -68,50 +68,6 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-medium"
-                  >Meta Business ID <span class="text-danger">*</span></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.metaBusinessId"
-                  :readonly="!isEditing"
-                  placeholder="123456789012345"
-                />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label text-secondary fw-medium"
-                  >Business Account ID <span class="text-danger">*</span></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.businessAccountId"
-                  :readonly="!isEditing"
-                  placeholder="WABA ID / Business Account ID"
-                />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label text-secondary fw-medium"
-                  >Meta App ID <span class="text-danger">*</span></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.appId"
-                  :readonly="!isEditing"
-                  placeholder="App ID"
-                />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label text-secondary fw-medium"
-                  >System User ID <span class="text-danger">*</span></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.systemUserId"
-                  :readonly="!isEditing"
-                  placeholder="System User ID"
-                />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label text-secondary fw-medium"
                   >Status <span class="text-danger">*</span></label>
                 <div>
                   <span
@@ -231,10 +187,6 @@ const whatsappData = ref<WhatsAppIntegration>({
 
 type WhatsAppConfigForm = {
   whatsappNumber: string;
-  businessAccountId: string;
-  metaBusinessId: string;
-  appId: string;
-  systemUserId: string;
   accessToken: string;
   webhookVerifyToken: string;
   webhookCallbackUrl: string;
@@ -242,10 +194,6 @@ type WhatsAppConfigForm = {
 
 const form = reactive<WhatsAppConfigForm>({
   whatsappNumber: whatsappData.value.whatsappNumber,
-  businessAccountId: whatsappData.value.businessAccountId,
-  metaBusinessId: whatsappData.value.metaBusinessId || "",
-  appId: "123456789012345",
-  systemUserId: "998877665544332",
   accessToken: whatsappData.value.accessToken,
   webhookVerifyToken: whatsappData.value.webhookVerifyToken,
   webhookCallbackUrl: "https://api.acme.com/webhook/whatsapp",
@@ -267,8 +215,6 @@ async function saveChanges() {
   try {
     await new Promise((resolve) => setTimeout(resolve, 350));
     whatsappData.value.whatsappNumber = form.whatsappNumber;
-    whatsappData.value.businessAccountId = form.businessAccountId;
-    whatsappData.value.metaBusinessId = form.metaBusinessId;
     whatsappData.value.accessToken = form.accessToken;
     whatsappData.value.webhookVerifyToken = form.webhookVerifyToken;
     originalForm.value = { ...form };

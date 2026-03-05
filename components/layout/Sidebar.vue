@@ -146,6 +146,15 @@
         </div>
 
         <NuxtLink
+          :to="`/organization/${customerId as string}/account`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path.includes('/account') }"
+        >
+          <i class="bi bi-building me-3 fs-5"></i>
+          <span class="fw-medium">Organization</span>
+        </NuxtLink>
+
+        <NuxtLink
           :to="`/organization/${customerId as string}/wabas`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
           :class="{
@@ -179,6 +188,15 @@
         >
           <i class="bi bi-gear-wide-connected me-3 fs-5"></i>
           <span class="fw-medium">API Configuration</span>
+        </NuxtLink>
+
+        <NuxtLink
+          :to="`/organization/${customerId as string}/ai-settings`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path.includes('/ai-settings') }"
+        >
+          <i class="bi bi-cpu me-3 fs-5"></i>
+          <span class="fw-medium">AI Settings</span>
         </NuxtLink>
 
         <NuxtLink

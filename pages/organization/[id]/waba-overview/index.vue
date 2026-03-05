@@ -54,121 +54,88 @@
         <div class="card border-0 shadow-sm p-4 mb-4">
           <h6 class="fw-bold mb-3 text-uppercase small text-muted">WABA Business Profile</h6>
           <p class="text-secondary small mb-4">
-            Data utama yang dibutuhkan saat pendaftaran WhatsApp Business Account.
+            Core WABA fields and status columns for this organization workspace.
           </p>
 
           <div class="row g-4">
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">COMPANY / PT NAME <span class="text-danger">*</span></label>
+              <label class="form-label text-secondary fw-semibold extra-small">DISPLAY NAME</label>
               <input
                 type="text"
                 class="form-control"
-                v-model="form.legalEntityName"
-                :readonly="!isEditing"
-                placeholder="PT Example Indonesia"
-              />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">WABA DISPLAY NAME <span class="text-danger">*</span></label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.displayName"
+                v-model="form.display_name"
                 :readonly="!isEditing"
                 placeholder="Brand name shown to users"
               />
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">WHATSAPP NUMBER <span class="text-danger">*</span></label>
+              <label class="form-label text-secondary fw-semibold extra-small">WABA ID</label>
               <input
                 type="text"
                 class="form-control"
-                v-model="form.whatsappNumber"
+                v-model="form.waba_id"
+                :readonly="!isEditing"
+                placeholder="WABA ID"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-secondary fw-semibold extra-small">PHONE NUMBER ID</label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.phone_number_id"
+                :readonly="!isEditing"
+                placeholder="Phone Number ID"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-secondary fw-semibold extra-small">DISPLAY PHONE NUMBER</label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.display_phone_number"
                 :readonly="!isEditing"
                 placeholder="+628xxxxxxxxxx"
               />
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS CATEGORY <span class="text-danger">*</span></label>
-              <select class="form-select" v-model="form.businessCategory" :disabled="!isEditing">
-                <option value="">Select category</option>
-                <option value="Retail">Retail</option>
-                <option value="Technology">Technology</option>
-                <option value="Education">Education</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Food & Beverage">Food & Beverage</option>
-                <option value="Services">Services</option>
+              <label class="form-label text-secondary fw-semibold extra-small">QUALITY RATING</label>
+              <select class="form-select" v-model="form.quality_rating" :disabled="!isEditing">
+                <option value="GREEN">GREEN</option>
               </select>
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">WEBSITE URL <span class="text-danger">*</span></label>
-              <input
-                type="url"
-                class="form-control"
-                v-model="form.website"
-                :readonly="!isEditing"
-                placeholder="https://company.com"
-              />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS EMAIL <span class="text-danger">*</span></label>
-              <input
-                type="email"
-                class="form-control"
-                v-model="form.businessEmail"
-                :readonly="!isEditing"
-                placeholder="support@company.com"
-              />
-            </div>
-            <div class="col-12">
-              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS ADDRESS <span class="text-danger">*</span></label>
+              <label class="form-label text-secondary fw-semibold extra-small">MESSAGING LIMIT TIER</label>
               <input
                 type="text"
                 class="form-control"
-                v-model="form.businessAddress"
+                v-model="form.messaging_limit_tier"
                 :readonly="!isEditing"
-                placeholder="Alamat legal usaha"
-              />
-            </div>
-            <div class="col-12">
-              <label class="form-label text-secondary fw-semibold extra-small">BUSINESS DESCRIPTION <span class="text-danger">*</span></label>
-              <textarea
-                class="form-control"
-                rows="3"
-                v-model="form.businessDescription"
-                :readonly="!isEditing"
-                placeholder="Deskripsi bisnis yang akan digunakan pada profil WhatsApp"
-              ></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="card border-0 shadow-sm p-4 mb-4">
-          <h6 class="fw-bold mb-3 text-uppercase small text-muted">Verification Documents</h6>
-          <p class="text-secondary small mb-4">
-            Upload berkas legal untuk proses verifikasi bisnis Meta Cloud API.
-          </p>
-
-          <div class="row g-4">
-            <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">NPWP NUMBER <span class="text-danger">*</span></label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.npwpNumber"
-                :readonly="!isEditing"
-                placeholder="contoh: 01.234.567.8-901.000"
+                placeholder="TIER_1"
               />
             </div>
             <div class="col-md-6">
-              <label class="form-label text-secondary fw-semibold extra-small">COMPANY PROOF DOCUMENT <span class="text-danger">*</span></label>
-              <input
-                type="file"
-                class="form-control"
-                :disabled="!isEditing"
-                @change="handleDocumentUpload"
-                accept=".pdf,.jpg,.jpeg,.png"
-              />
+              <label class="form-label text-secondary fw-semibold extra-small">CONNECTION STATUS</label>
+              <select class="form-select" v-model="form.connection_status" :disabled="!isEditing">
+                <option value="CONNECTED">CONNECTED</option>
+                <option value="DISCONNECTED">DISCONNECTED</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-secondary fw-semibold extra-small">WABA STATUS</label>
+              <input type="text" class="form-control" v-model="form.waba_status" :readonly="!isEditing" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-secondary fw-semibold extra-small">DISPLAY NAME STATUS</label>
+              <input type="text" class="form-control" v-model="form.display_name_status" :readonly="!isEditing" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-secondary fw-semibold extra-small">PHONE STATUS</label>
+              <input type="text" class="form-control" v-model="form.phone_status" :readonly="!isEditing" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-secondary fw-semibold extra-small">MESSAGING STATUS</label>
+              <input type="text" class="form-control" v-model="form.messaging_status" :readonly="!isEditing" />
             </div>
           </div>
         </div>
@@ -182,16 +149,16 @@
               <i class="bi bi-chat-dots-fill text-primary fs-4"></i>
             </div>
             <div>
-              <div class="small text-muted mb-0">WABA Registration</div>
-              <div class="h5 fw-bold mb-0 text-dark">{{ form.registrationStatus || "PENDING" }}</div>
+              <div class="small text-muted mb-0">Connection Status</div>
+              <div class="h5 fw-bold mb-0 text-dark">{{ form.connection_status || "CONNECTED" }}</div>
             </div>
           </div>
 
           <div class="space-y-3">
             <div class="d-flex justify-content-between py-2 border-bottom border-light">
-              <span class="text-secondary small">Verification</span>
+              <span class="text-secondary small">WABA Status</span>
               <span :class="['badge rounded-pill', customer.status === 'active' ? 'bg-success' : 'bg-danger']">
-                {{ form.verificationStatus || "PENDING" }}
+                {{ form.waba_status || "UNKNOWN" }}
               </span>
             </div>
             <div class="d-flex justify-content-between py-2 border-bottom border-light">
@@ -199,10 +166,22 @@
               <span
                 :class="[
                   'badge rounded-pill',
-                  form.displayNameStatus === 'APPROVED' ? 'bg-success' : 'bg-warning text-dark',
+                  form.display_name_status === 'APPROVED' ? 'bg-success' : 'bg-warning text-dark',
                 ]"
               >
-                {{ form.displayNameStatus || "PENDING_REVIEW" }}
+                {{ form.display_name_status || "PENDING_REVIEW" }}
+              </span>
+            </div>
+            <div class="d-flex justify-content-between py-2 border-bottom border-light">
+              <span class="text-secondary small">Phone Status</span>
+              <span class="badge rounded-pill bg-secondary-subtle text-secondary">
+                {{ form.phone_status || "UNKNOWN" }}
+              </span>
+            </div>
+            <div class="d-flex justify-content-between py-2 border-bottom border-light">
+              <span class="text-secondary small">Messaging Status</span>
+              <span class="badge rounded-pill bg-secondary-subtle text-secondary">
+                {{ form.messaging_status || "UNKNOWN" }}
               </span>
             </div>
             <div class="d-flex justify-content-between py-2">
@@ -264,24 +243,17 @@ const showSuspendModal = ref(false);
 const suspending = ref(false);
 
 const form = reactive({
-  legalEntityName: "",
-  displayName: "",
-  businessCategory: "",
-  whatsappNumber: "",
-  website: "",
-  businessEmail: "",
-  businessAddress: "",
-  businessDescription: "",
-  metaBusinessId: "",
-  businessAccountId: "",
-  phoneNumberId: "",
-  npwpNumber: "",
-  companyProofFileName: "",
-  registrationStatus: "PENDING",
-  verificationStatus: "PENDING",
-  displayNameStatus: "PENDING_REVIEW",
-  qualityRating: "N/A",
-  messagingTier: "TIER_1",
+  display_name: "",
+  waba_id: "",
+  phone_number_id: "",
+  display_phone_number: "",
+  quality_rating: "",
+  messaging_limit_tier: "",
+  connection_status: "CONNECTED",
+  waba_status: "",
+  display_name_status: "",
+  phone_status: "",
+  messaging_status: "",
 });
 
 function initForm() {
@@ -290,24 +262,17 @@ function initForm() {
   const integration = customer.value.integrations?.[0];
 
   Object.assign(form, {
-    legalEntityName: customer.value.businessName || "",
-    displayName: integration?.name || customer.value.name || customer.value.businessName || "",
-    businessCategory: customer.value.businessCategory || integration?.businessCategory || "",
-    whatsappNumber: customer.value.whatsappNumber || integration?.whatsappNumber || "",
-    website: customer.value.website || "",
-    businessEmail: customer.value.email || "",
-    businessAddress: (customer.value as any).businessAddress || "",
-    businessDescription: (customer.value as any).businessDescription || "",
-    metaBusinessId: customer.value.metaBusinessId || integration?.metaBusinessId || "",
-    businessAccountId: integration?.businessAccountId || "",
-    phoneNumberId: integration?.phoneNumberId || "",
-    npwpNumber: (customer.value as any).npwpNumber || "",
-    companyProofFileName: (customer.value as any).companyProofFileName || "",
-    registrationStatus: (customer.value as any).registrationStatus || "PENDING",
-    verificationStatus: (customer.value as any).verificationStatus || "PENDING",
-    displayNameStatus: (customer.value as any).displayNameStatus || "PENDING_REVIEW",
-    qualityRating: (customer.value as any).qualityRating || "N/A",
-    messagingTier: (customer.value as any).messagingTier || "TIER_1",
+    display_name: integration?.name || customer.value.name || customer.value.businessName || "",
+    waba_id: integration?.businessAccountId || "",
+    phone_number_id: integration?.phoneNumberId || "",
+    display_phone_number: integration?.whatsappNumber || customer.value.whatsappNumber || "",
+    quality_rating: (customer.value as any).qualityRating || "GREEN",
+    messaging_limit_tier: (customer.value as any).messagingTier || "",
+    connection_status: (integration?.status || "connected").toUpperCase(),
+    waba_status: (customer.value as any).wabaStatus || "",
+    display_name_status: (customer.value as any).displayNameStatus || "",
+    phone_status: (customer.value as any).phoneStatus || "",
+    messaging_status: (customer.value as any).messagingStatus || "",
   });
 }
 
@@ -336,8 +301,8 @@ async function saveChanges() {
       : {
           id: `waba_${customer.value.id}`,
           customerId: customer.value.id,
-          name: form.displayName || "Primary WABA",
-          whatsappNumber: form.whatsappNumber,
+          name: form.display_name || "Primary WABA",
+          whatsappNumber: form.display_phone_number,
           phoneNumberId: "",
           businessAccountId: "",
           accessToken: "",
@@ -347,31 +312,22 @@ async function saveChanges() {
         };
 
     Object.assign(primaryIntegration, {
-      name: form.displayName,
-      whatsappNumber: form.whatsappNumber,
-      phoneNumberId: form.phoneNumberId,
-      businessAccountId: form.businessAccountId,
-      metaBusinessId: form.metaBusinessId,
-      businessCategory: form.businessCategory,
+      name: form.display_name,
+      whatsappNumber: form.display_phone_number,
+      phoneNumberId: form.phone_number_id,
+      businessAccountId: form.waba_id,
+      status: form.connection_status.toLowerCase() === "disconnected" ? "disconnected" : "connected",
     });
 
     Object.assign(customer.value, {
-      businessName: form.legalEntityName,
-      name: form.displayName,
-      businessCategory: form.businessCategory,
-      whatsappNumber: form.whatsappNumber,
-      website: form.website,
-      metaBusinessId: form.metaBusinessId,
-      email: form.businessEmail,
-      businessAddress: form.businessAddress,
-      businessDescription: form.businessDescription,
-      npwpNumber: form.npwpNumber,
-      companyProofFileName: form.companyProofFileName,
-      registrationStatus: form.registrationStatus,
-      verificationStatus: form.verificationStatus,
-      displayNameStatus: form.displayNameStatus,
-      qualityRating: form.qualityRating,
-      messagingTier: form.messagingTier,
+      name: form.display_name,
+      whatsappNumber: form.display_phone_number,
+      displayNameStatus: form.display_name_status,
+      qualityRating: form.quality_rating,
+      messagingTier: form.messaging_limit_tier,
+      wabaStatus: form.waba_status,
+      phoneStatus: form.phone_status,
+      messagingStatus: form.messaging_status,
       integrations: [primaryIntegration],
     } as any);
 
@@ -381,12 +337,6 @@ async function saveChanges() {
   } finally {
     saving.value = false;
   }
-}
-
-function handleDocumentUpload(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
-  form.companyProofFileName = file?.name || "";
 }
 
 function openSuspendModal() {
