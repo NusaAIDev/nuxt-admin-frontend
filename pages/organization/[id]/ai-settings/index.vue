@@ -2,7 +2,7 @@
   <div>
     <div class="mb-4">
       <h4 class="fw-bold mb-1">AI Settings</h4>
-      <p class="text-secondary small mb-0">Manage AI behavior and monthly token limits.</p>
+      <p class="text-secondary small mb-0">Manage AI behavior, model, and monthly token limits.</p>
     </div>
 
     <div v-if="loading" class="card border-0 shadow-sm p-4 mb-4">
@@ -60,9 +60,18 @@
         <div class="col-md-6">
           <label class="form-label text-secondary fw-semibold extra-small">AI MODE</label>
           <select class="form-select" v-model="form.ai_mode" :disabled="!isEditing">
-            <option value="AUTO">AUTO</option>
-            <option value="MANUAL">MANUAL</option>
-            <option value="HYBRID">HYBRID</option>
+            <option value="AI_ONLY">AI ONLY</option>
+            <option value="HYBRID_HUMAN">HYBRID (AI + HUMAN)</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label text-secondary fw-semibold extra-small">AI MODEL</label>
+          <select class="form-select" v-model="form.ai_model" :disabled="!isEditing">
+            <option value="gpt-4.1-mini">GPT-4.1 Mini</option>
+            <option value="gpt-4.1">GPT-4.1</option>
+            <option value="gpt-4o-mini">GPT-4o Mini</option>
+            <option value="gpt-4o">GPT-4o</option>
           </select>
         </div>
 
@@ -91,14 +100,7 @@
 
         <div class="col-md-6">
           <label class="form-label text-secondary fw-semibold extra-small">MONTHLY TOKEN USED</label>
-          <input
-            type="number"
-            min="0"
-            class="form-control"
-            v-model.number="form.monthly_token_used"
-            :readonly="!isEditing"
-            placeholder="e.g. 245000"
-          />
+          <div class="form-control bg-body-tertiary text-secondary">{{ formattedMonthlyTokenUsed }}</div>
         </div>
 
         <div class="col-md-6">
@@ -151,7 +153,8 @@ let toastTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const form = reactive({
   ai_enabled: true,
-  ai_mode: "AUTO",
+  ai_mode: "AI_ONLY",
+  ai_model: "gpt-4.1-mini",
   system_prompt: "",
   monthly_token_limit: 0,
   monthly_token_used: 0,
@@ -159,6 +162,7 @@ const form = reactive({
 });
 
 const originalForm = ref({ ...form });
+const formattedMonthlyTokenUsed = computed(() => `${Number(form.monthly_token_used || 0).toLocaleString()} tokens`);
 
 function toDateTimeLocal(value: string) {
   if (!value) return "";
@@ -202,7 +206,11 @@ async function loadAiSettings() {
     if (!current) throw new Error("Organization not found");
 
     form.ai_enabled = (current as any).aiEnabled ?? true;
-    form.ai_mode = (current as any).aiMode ?? "AUTO";
+    const rawAiMode = String((current as any).aiMode ?? "").toUpperCase();
+    form.ai_mode = rawAiMode === "HYBRID" || rawAiMode === "HYBRID_HUMAN" || rawAiMode === "MANUAL"
+      ? "HYBRID_HUMAN"
+      : "AI_ONLY";
+    form.ai_model = (current as any).aiModel || (current as any).modelUsed || "gpt-4.1-mini";
     form.system_prompt = current.systemInstruction || "";
     form.monthly_token_limit = Number((current as any).monthlyTokenLimit ?? 0);
     form.monthly_token_used = Number((current as any).monthlyTokenUsed ?? 0);
@@ -233,6 +241,8 @@ async function saveChanges() {
       Object.assign(customerStore.currentCustomer, {
         aiEnabled: form.ai_enabled,
         aiMode: form.ai_mode,
+        aiModel: form.ai_model,
+        modelUsed: form.ai_model,
         systemInstruction: form.system_prompt,
         monthlyTokenLimit: form.monthly_token_limit,
         monthlyTokenUsed: form.monthly_token_used,

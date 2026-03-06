@@ -191,30 +191,21 @@
         </NuxtLink>
 
         <NuxtLink
-          :to="`/organization/${customerId as string}/ai-settings`"
-          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
-          :class="{ active: $route.path.includes('/ai-settings') }"
-        >
-          <i class="bi bi-cpu me-3 fs-5"></i>
-          <span class="fw-medium">AI Settings</span>
-        </NuxtLink>
-
-        <NuxtLink
           :to="`/organization/${customerId as string}/templates`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
           :class="{ active: $route.path.includes('/templates') }"
         >
           <i class="bi bi-file-earmark-text me-3 fs-5"></i>
-          <span class="fw-medium">Message Templates</span>
+          <span class="fw-medium">Message template</span>
         </NuxtLink>
 
         <NuxtLink
-          :to="`/organization/${customerId as string}/inbox`"
+          :to="`/organization/${customerId as string}/ai-settings`"
           class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
-          :class="{ active: $route.path.includes('/inbox') }"
+          :class="{ active: $route.path.includes('/ai-settings') }"
         >
-          <i class="bi bi-chat-dots me-3 fs-5"></i>
-          <span class="fw-medium">Conversation Inbox</span>
+          <i class="bi bi-cpu me-3 fs-5"></i>
+          <span class="fw-medium">AI Setting</span>
         </NuxtLink>
 
         <NuxtLink
@@ -224,6 +215,15 @@
         >
           <i class="bi bi-book me-3 fs-5"></i>
           <span class="fw-medium">Knowledge Base</span>
+        </NuxtLink>
+
+        <NuxtLink
+          :to="`/organization/${customerId as string}/inbox`"
+          class="list-group-item list-group-item-action d-flex align-items-center py-2 px-4 mb-1"
+          :class="{ active: $route.path.includes('/inbox') }"
+        >
+          <i class="bi bi-chat-dots me-3 fs-5"></i>
+          <span class="fw-medium">Conversation Inbox</span>
         </NuxtLink>
 
         <NuxtLink
